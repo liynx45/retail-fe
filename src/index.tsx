@@ -3,13 +3,27 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import AutoLogout from './components/layouts/AutoLogout';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './libs/redux/store';
+import NotifProvider from './components/layouts/NotifProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <App />
+    <AutoLogout>
+      <Provider store={store}>
+        <BrowserRouter>
+          <NotifProvider>
+            <App />
+          </NotifProvider>
+        </BrowserRouter>
+      </Provider>
+    </AutoLogout>
   </React.StrictMode>
 );
 

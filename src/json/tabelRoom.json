@@ -1,0 +1,227 @@
+[
+    {
+        "name": "Room 101",
+        "space_room": 2,
+        "no_room": 101,
+        "desc": "Cozy room with a view",
+        "price": 50,
+        "status": true,
+        "type": "all"
+    },
+    {
+        "name": "Room 102",
+        "space_room": 3,
+        "no_room": 102,
+        "desc": "Spacious room for families",
+        "price": 70,
+        "status": false,
+        "type": "man"
+    },
+    {
+        "name": "Room 103",
+        "space_room": 2,
+        "no_room": 103,
+        "desc": "Affordable room for students",
+        "price": 40,
+        "status": true,
+        "type": "woman"
+    },
+    {
+        "name": "Room 104",
+        "space_room": 1,
+        "no_room": 104,
+        "desc": "Compact room for solo travelers",
+        "price": 30,
+        "status": true,
+        "type": "all"
+    },
+    {
+        "name": "Room 105",
+        "space_room": 2,
+        "no_room": 105,
+        "desc": "Luxurious suite with Jacuzzi",
+        "price": 150,
+        "status": false,
+        "type": "all"
+    },
+    {
+        "name": "Room 106",
+        "space_room": 2,
+        "no_room": 106,
+        "desc": "Pet-friendly room with garden access",
+        "price": 60,
+        "status": true,
+        "type": "woman"
+    },
+    {
+        "name": "Room 107",
+        "space_room": 3,
+        "no_room": 107,
+        "desc": "Executive suite with city view",
+        "price": 120,
+        "status": true,
+        "type": "man"
+    },
+    {
+        "name": "Room 108",
+        "space_room": 2,
+        "no_room": 108,
+        "desc": "Economy room for budget travelers",
+        "price": 35,
+        "status": false,
+        "type": "all"
+    },
+    {
+        "name": "Room 109",
+        "space_room": 1,
+        "no_room": 109,
+        "desc": "Simple room for solo travelers",
+        "price": 25,
+        "status": true,
+        "type": "woman"
+    },
+    {
+        "name": "Room 110",
+        "space_room": 2,
+        "no_room": 110,
+        "desc": "Family-friendly suite with kitchenette",
+        "price": 80,
+        "status": true,
+        "type": "all"
+    },
+    {
+        "name": "Room 111",
+        "space_room": 2,
+        "no_room": 111,
+        "desc": "Romantic room with fireplace",
+        "price": 90,
+        "status": false,
+        "type": "all"
+    },
+    {
+        "name": "Room 112",
+        "space_room": 2,
+        "no_room": 112,
+        "desc": "Comfortable room with balcony",
+        "price": 70,
+        "status": true,
+        "type": "man"
+    },
+    {
+        "name": "Room 113",
+        "space_room": 1,
+        "no_room": 113,
+        "desc": "Basic room for budget travelers",
+        "price": 20,
+        "status": true,
+        "type": "woman"
+    },
+    {
+        "name": "Room 114",
+        "space_room": 2,
+        "no_room": 114,
+        "desc": "Cozy room with garden view",
+        "price": 55,
+        "status": false,
+        "type": "all"
+    },
+    {
+        "name": "Room 115",
+        "space_room": 2,
+        "no_room": 115,
+        "desc": "Business suite with office area",
+        "price": 100,
+        "status": true,
+        "type": "man"
+    },
+    {
+        "name": "Room 116",
+        "space_room": 2,
+        "no_room": 116,
+        "desc": "Modern room with smart amenities",
+        "price": 80,
+        "status": true,
+        "type": "woman"
+    },
+    {
+        "name": "Room 117",
+        "space_room": 3,
+        "no_room": 117,
+        "desc": "Grand suite with panoramic view",
+        "price": 200,
+        "status": false,
+        "type": "all"
+    },
+    {
+        "name": "Room 118",
+        "space_room": 2,
+        "no_room": 118,
+        "desc": "Compact room for solo travelers",
+        "price": 30,
+        "status": true,
+        "type": "all"
+    },
+    {
+        "name": "Room 119",
+        "space_room": 1,
+        "no_room": 119,
+        "desc": "Simple room for budget travelers",
+        "price": 25,
+        "status": true,
+        "type": "man"
+    },
+    {
+        "name": "Room 120",
+        "space_room": 2,
+        "no_room": 120,
+        "desc": "Luxurious suite with Jacuzzi",
+        "price": 150,
+        "status": false,
+        "type": "woman"
+    },
+    {
+        "name": "Room 121",
+        "space_room": 2,
+        "no_room": 121,
+        "desc": "Pet-friendly room with garden access",
+        "price": 60,
+        "status": true,
+        "type": "all"
+    },
+    {
+        "name": "Room 122",
+        "space_room": 3,
+        "no_room": 122,
+        "desc": "Executive suite with city view",
+        "price": 120,
+        "status": true,
+        "type": "man"
+    },
+    {
+        "name": "Room 123",
+        "space_room": 2,
+        "no_room": 123,
+        "desc": "Economy room for budget travelers",
+        "price": 35,
+        "status": false,
+        "type": "all"
+    },
+    {
+        "name": "Room 124",
+        "space_room": 1,
+        "no_room": 124,
+        "desc": "Simple room for solo travelers",
+        "price": 25,
+        "status": true,
+        "type": "woman"
+    },
+    {
+        "name": "Room 125",
+        "space_room": 2,
+        "no_room": 125,
+        "desc": "Family-friendly suite with kitchenette",
+        "price": 80,
+        "status": true,
+        "type": "all"
+    }
+]
