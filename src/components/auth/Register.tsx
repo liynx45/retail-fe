@@ -44,12 +44,6 @@ function Register() {
         }
     }
 
-    useEffect(() => {
-        if (status === "authorized"){
-            navigate("/dashbord")
-        }
-    })
-
     return (
         <div
             className='w-[400px] bg-slate-200 p-6 rounded-xl h-fit'

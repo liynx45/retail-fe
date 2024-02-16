@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react"
-import { decryptData } from "../libs/crypto";
-import axios from "axios";
+import { decryptData, encryptData } from "../libs/crypto";
 import { useLocation, useNavigate } from "react-router-dom";
 import axiosPrivate from "../libs/axios";
-import { useDispatch } from "react-redux";
-import { updateAuth } from "../libs/redux/slices/authSlice";
 
 interface User {
     username: string;
@@ -12,6 +9,8 @@ interface User {
     first_name: string;
     last_name: string;
     profile: string;
+    email?: string;
+    verify: boolean
 }
 
 const useUser = () => {
@@ -23,27 +22,24 @@ const useUser = () => {
         first_name: "",
         last_name: "",
         profile: "",
+        email: "",
+        verify: false
     })
     const [trigger, setTrigger] = useState<boolean>(false)
     const location = useLocation()
     const navigate = useNavigate()
-    const dispatch = useDispatch()
 
     const getMe = async () => {
         const accessToken = window.localStorage.getItem(process.env.REACT_APP_LOCAL_KEY!)
-        const userLocal = window.localStorage.getItem("_user")
         const decryptAccess = decryptData(accessToken!)
-        const decryptUser = decryptData(userLocal!)
-        if (!decryptAccess || !decryptUser) {
+        if (!decryptAccess) {
             setStatus("unauthorized")
             return
         } else {
             setStatus("authorized")
-            setUser(JSON.parse(decryptUser))
-            dispatch(updateAuth(JSON.parse(decryptUser)))
         }
         try {
-            // setStatus("loading")
+            setStatus("loading")
             const me = await axiosPrivate.get("http://localhost:3001/auth/me", {
                 headers: {
                     Authorization: `Bearer ${decryptAccess}`
@@ -65,16 +61,32 @@ const useUser = () => {
     }, [trigger])
 
     useEffect(() => {
+
+        if (!location.pathname.startsWith("/dashbord"))
+            return
+
         const accessToken = window.localStorage.getItem(process.env.REACT_APP_LOCAL_KEY!)
         const userLocal = window.localStorage.getItem("_user")
         const decryptAccess = decryptData(accessToken!)
         const decryptUser = decryptData(userLocal!)
-        if (!decryptAccess || !decryptUser) {
-            setStatus("unauthorized")
-            return
+
+        if (!userLocal && accessToken !== null) {
+            const getUser = async () => {
+                const get = await axiosPrivate.get("/auth/current")
+                if (get.status === 200) {
+                    localStorage.setItem("_user", encryptData(JSON.stringify(get.data.result)))
+                    setUser(get.data.result)
+                }
+            }
+            getUser()
         } else {
-            setStatus("authorized")
-            setUser(JSON.parse(decryptUser))
+            if (!decryptAccess || !decryptUser) {
+                setStatus("unauthorized")
+                return
+            } else {
+                setStatus("authorized")
+                setUser(JSON.parse(decryptUser))
+            }
         }
     }, [location.pathname])
 
@@ -82,7 +94,7 @@ const useUser = () => {
         setTrigger(prev => !prev)
     }
 
-    return { status, user, refresh }
+    return { status, user, refresh, setUser, setStatus }
 }
 
 export {

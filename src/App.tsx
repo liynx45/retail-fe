@@ -26,6 +26,7 @@ import SettingMain from './pages/dashbord/SettingMain';
 import SettingUser from './pages/dashbord/SettingUser';
 import SettingPassword from './pages/dashbord/SettingPassword';
 import Order from './pages/views/Order';
+import SettingVerify from './pages/dashbord/SettingVerify';
 
 const privateRoute = (access: number[], role: number) => {
   if (access.includes(role)) {
@@ -122,15 +123,22 @@ function App() {
 
   useEffect(() => {
     if (location.pathname.startsWith("/auth")) {
-      if (status === "unauthorized" && location.pathname !== "/auth/register") {
-        navigate("/auth/login")
-      }
-
-      if (status === "authorized") {
+      if (status === "unauthorized") {
+        if (location.pathname !== "/auth/register") {
+          navigate("/auth/login")
+        }
+      } else if (status === "authorized") {
         navigate("/dashbord")
       }
     }
-    console.log("App Layout :", status)
+
+    if (location.pathname.startsWith("/dashbord")){
+      if (status === "unauthorized") {
+        navigate("/auth/login")
+      }
+    }
+    
+    console.log("App Root status :", status)
   }, [location.pathname, status])
 
   return (
@@ -184,6 +192,7 @@ function App() {
             <Route index element={<SettingMain />} />
             <Route path='user' element={<SettingUser />} />
             <Route path='password' element={<SettingPassword />} />
+            <Route path='verifikasi' element={<SettingVerify />} />
           </Route>
         </Route>
       </Routes>

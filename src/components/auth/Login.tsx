@@ -4,9 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import useLoading from '../../hooks/useLoading';
 import { encryptData } from '../../libs/crypto';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../libs/redux/store';
-import { loadingAuth, updateAuth } from '../../libs/redux/slices/authSlice';
 import { useUser } from '../../hooks/useUser';
 
 
@@ -15,8 +12,7 @@ function Login() {
     const [form] = Form.useForm();
     const navigate = useNavigate()
     const { isLoading, setLoading } = useLoading()
-    const dispatch = useDispatch<AppDispatch>()
-    const { status } = useUser()
+    const { setStatus, setUser } = useUser()
 
     const submit = async () => {
 
@@ -29,7 +25,7 @@ function Login() {
         })
 
         try {
-            dispatch(loadingAuth("loading"))
+            setStatus("loading")
             const reqLogin = await axios.post("http://localhost:3001/auth/login", {
                 username: username,
                 password: password
@@ -43,8 +39,8 @@ function Login() {
                     content: "Success login",
                     type: "success"
                 })
-                dispatch(updateAuth(reqLogin.data.user))
-                dispatch(loadingAuth("success"))
+                setUser(reqLogin.data.user)
+                setStatus("authorized")
                 navigate("/dashbord")
                 form.resetFields()
                 setLoading("success")
@@ -52,14 +48,11 @@ function Login() {
         } catch (err: any) {
             form.setFieldValue("password", "")
             setLoading("error")
-            dispatch(loadingAuth("error"))
+            setStatus("unauthorized")
             message.open({
                 content: err.response.data?.errors || "Error",
                 type: "warning"
             })
-            setTimeout(() => {
-                message.destroy()
-            }, 1200)
         }
     }
 

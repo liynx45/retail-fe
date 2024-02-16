@@ -1,5 +1,11 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { decryptData, encryptData } from "../crypto";
+
+interface RetryQueueItem {
+  resolve: (value?: any) => void;
+  reject: (error?: any) => void;
+  config: AxiosRequestConfig;
+}
 
 const headers = {
   Accept: "application/json",
@@ -11,6 +17,8 @@ const axiosPrivate = axios.create({
   headers: headers
 })
 
+let IsRefreshing = false
+const refreshAndRetryQueue: RetryQueueItem[] = [];
 
 axiosPrivate.interceptors.request.use(
   (config) => {
@@ -19,13 +27,9 @@ axiosPrivate.interceptors.request.use(
     const decryptAccess = decryptData(accessToken!)
 
     if (decryptAccess) {
-      console.log("axios success");
       config.headers["Authorization"] = `Bearer ${decryptAccess}`
-      return config;
-    } else {
-      console.log("axios fail");
-      return config
     }
+    return config
   },
   (error) => {
     return Promise.reject(error);
@@ -39,19 +43,38 @@ axiosPrivate.interceptors.response.use(
   async (error) => {
     const originalReq = error.config
     if (error.response && error.response.status === 401) {
-      originalReq._retry = true
-      try {
-        const newAccessToken = await axiosPrivate.get("/auth/refresh")
+      if (!IsRefreshing) {
+        IsRefreshing = true
+        try {
+          const newAccessToken = await axiosPrivate.get("/auth/refresh")
+          IsRefreshing = true
+          if (newAccessToken.status === 200) {
+            window.localStorage.setItem(process.env.REACT_APP_LOCAL_KEY!, encryptData(newAccessToken.data.data.access_Token))
 
-        if (newAccessToken.status === 200) {
-          window.localStorage.setItem(process.env.REACT_APP_LOCAL_KEY!, encryptData(newAccessToken.data.data.access_Token))
+            refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
+              axiosPrivate
+                .request(config)
+                .then((response) => resolve(response))
+                .catch((err) => reject(err));
+            });
+
+            refreshAndRetryQueue.length = 0;
+
+            return axiosPrivate(originalReq)
+          }
+          return error
+        } catch (err) {
+          window.location.href = "/"
+          window.localStorage.removeItem(process.env.REACT_APP_LOCAL_KEY!)
+          window.localStorage.removeItem("_user")
+          throw err
+        } finally {
+          IsRefreshing = false
         }
-        return error
-      } catch (err) {
-        window.localStorage.removeItem(process.env.REACT_APP_LOCAL_KEY!)
-        window.localStorage.removeItem("_user")
-        throw err
       }
+      return new Promise<void>((resolve, reject) => {
+        refreshAndRetryQueue.push({ config: originalReq, resolve, reject });
+      });
     }
     return Promise.reject(error);
   }

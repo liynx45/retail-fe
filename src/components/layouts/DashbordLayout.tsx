@@ -6,7 +6,7 @@ import {
   UserOutlined
 } from '@ant-design/icons';
 import { Avatar, Badge, Breadcrumb, Flex, Layout, theme } from 'antd';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import NotifModal from '../cards/ModalNotif';
 import UserModal from '../cards/ModalUser';
 import { useUser } from '../../hooks/useUser';
@@ -25,9 +25,9 @@ const DashbordLayout: React.FC = () => {
   const { pathname } = useLocation()
   const [isUserModal, setIsUserModal] = useState<boolean>(false)
   const [isNotifModal, setIsNotifModal] = useState<boolean>(false)
-  const { status, user, refresh } = useUser()
-  const navigate = useNavigate()
+  const { user, refresh } = useUser()
   const { notif } = useNotif()
+  const location = useLocation()
 
   const handlerUserModal = () => {
     setIsUserModal(prev => !prev)
@@ -37,7 +37,6 @@ const DashbordLayout: React.FC = () => {
     setIsNotifModal(prev => !prev)
   }
 
-  const location = useLocation()
 
   useEffect(() => {
     refresh()
@@ -92,13 +91,7 @@ const DashbordLayout: React.FC = () => {
               overflowY: "scroll"
             }}
           >
-            {
-              status === "authorized" ?
-                <Outlet /> :
-                status === "unauthorized" ?
-                  <button onClick={() => navigate("/")}>kembali</button> :
-                  <span>Loading</span>
-            }
+            <Outlet />
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>

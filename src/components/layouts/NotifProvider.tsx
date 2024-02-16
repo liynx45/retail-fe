@@ -17,15 +17,15 @@ function NotifProvider({
 }) {
 
     const [notif, setNotif] = useState<INotification[]>([])
-    const {user, status} = useUser()
+    const { status } = useUser()
 
-    const fetchNotif = async() => {
+    const fetchNotif = async () => {
         try {
             const get = await axiosPrivate.get("/api/notif")
             if (get.status === 200) {
-                setNotif(get.data.result.notif)
+                setNotif(get.data.result.notif.reverse())
             }
-        }catch{
+        } catch {
             throw new Error()
         }
     }
@@ -52,7 +52,7 @@ function NotifProvider({
     }, [status])
 
     return (
-        <NotifContext.Provider value={{notif, updateNotif, removeNotif}}>
+        <NotifContext.Provider value={{ notif, updateNotif, removeNotif }}>
             {children}
         </NotifContext.Provider>
     )

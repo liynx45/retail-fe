@@ -1,31 +1,37 @@
-import { Button, Form, Input, Typography, message } from 'antd'
+import { Button, Form, Input, InputNumber, Typography, message } from 'antd'
 import React from 'react'
 import axiosPrivate from '../../libs/axios'
 import { useUser } from '../../hooks/useUser'
 import useLoading from '../../hooks/useLoading'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../libs/redux/store'
 
 function SettingPassword() {
 
-    const { auth: {data}  } = useSelector((state: RootState) => state)
+    const { user } = useUser()
     const [form] = Form.useForm()
     const { isLoading, setLoading } = useLoading()
 
     const handlerPass = async () => {
         const pass_1 = form.getFieldValue("new_pass")
         const pass_2 = form.getFieldValue("re_pass")
+        const code = form.getFieldValue("code")
         if (pass_1 !== pass_2) {
             message.warning("Password tidak sama")
             return
         }
         try {
             setLoading("loading")
-            const reqData = {
+            const reqData: {
+                current_password: string;
+                new_password: string;
+                code?: number
+            } = {
                 current_password: form.getFieldValue("current_pass"),
                 new_password: form.getFieldValue("new_pass")
             }
-            const update = await axiosPrivate.patch(`/api/users/${data?.username}/password`, reqData)
+
+            if (code !== null || code !== undefined) reqData.code = code
+
+            const update = await axiosPrivate.patch(`/api/users/${user.username}/password`, reqData)
             if (update.status === 200) {
                 message.success("Password berhasil di rubah")
                 setLoading("success")
@@ -34,6 +40,17 @@ function SettingPassword() {
         } catch (e: any) {
             setLoading("error")
             message.warning(e.response.data.errors)
+        }
+    }
+
+    const handlerCode = async () => {
+        try {
+            const get = await axiosPrivate.get(`/api/users/${user.username}/code`)
+            if (get.status === 200) {
+                message.success("Code verifikasi sudah dikirim")
+            }
+        } catch (error: any) {
+            message.error(error.response.data.errors)
         }
     }
 
@@ -66,6 +83,30 @@ function SettingPassword() {
                 >
                     <Input type='password' />
                 </Form.Item>
+                {
+                    user.email ? (
+                        <div
+                            className='flex gap-4 items-center'
+                        >
+                            <Form.Item
+                                label="Kode verifikasi"
+                                name="code"
+                                rules={[
+                                    {
+                                        required: true
+                                    }
+                                ]}
+                            >
+                                <InputNumber />
+                            </Form.Item>
+                            <button
+                                className='px-4 py-1 bg-sky-300 rounded-md h-fit'
+                                onClick={handlerCode}
+                                type='button'
+                            >Dapatkan kode</button>
+                        </div>
+                    ) : null
+                }
                 <button disabled={isLoading === "loading"} className='py-1 bg-sky-400 rounded-md w-full tetx-white' type='submit'>Submit</button>
             </Form>
         </div>

@@ -16,7 +16,7 @@ const UserModal = ({
 
     const navigate = useNavigate()
     const { isLoading, setLoading } = useLoading()
-    const { status, user } = useUser()
+    const { setStatus, user } = useUser()
     const role = userRole(user?.role!)
 
 
@@ -28,8 +28,9 @@ const UserModal = ({
                 message.success("you have been logout")
                 window.localStorage.removeItem(process.env.REACT_APP_LOCAL_KEY!)
                 window.localStorage.removeItem("_user")
-                navigate("/")
                 setLoading("success")
+                setStatus("unauthorized")
+                navigate("/")
             }
         } catch (e) {
             setLoading("error")
