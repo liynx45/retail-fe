@@ -3,8 +3,8 @@ import axiosPrivate from "../../libs/axios/index"
 import { SettingOutlined } from "@ant-design/icons"
 import { Link, useNavigate } from "react-router-dom"
 import useLoading from "../../hooks/useLoading"
-import { useUser } from "../../hooks/useUser"
 import { userRole } from "../../utils"
+import { useSession } from "../layouts/AuthProvider"
 
 const UserModal = ({
     open,
@@ -16,7 +16,7 @@ const UserModal = ({
 
     const navigate = useNavigate()
     const { isLoading, setLoading } = useLoading()
-    const { setStatus, user } = useUser()
+    const { setStatus, user } = useSession()
     const role = userRole(user?.role!)
 
 

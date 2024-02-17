@@ -1,6 +1,8 @@
-import { Anchor, Flex, Typography } from 'antd'
+import { Flex, Typography } from 'antd'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
+import { RootState } from '../../libs/redux/store'
 
 function NavBar() {
     const accessToken = window.localStorage.getItem(process.env.REACT_APP_LOCAL_KEY!)
@@ -28,6 +30,7 @@ function NavBar() {
     ]
 
     const { pathname } = useLocation()
+    const { company } = useSelector((state: RootState) => state)
 
     return (
         <nav
@@ -40,7 +43,7 @@ function NavBar() {
                 <Typography.Title
                     level={4}
                 >
-                    <Link to={"/"}>Kos Abdi</Link>
+                    <Link to={"/"}>{company.data.name}</Link>
                 </Typography.Title>
 
                 <Flex

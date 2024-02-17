@@ -6,8 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import AutoLogout from './components/layouts/AutoLogout';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './libs/redux/store';
 import NotifProvider from './components/layouts/NotifProvider';
+import AuthProvider from './components/layouts/AuthProvider';
+import store from './libs/redux/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,15 +16,17 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <AutoLogout>
-      <Provider store={store}>
-        <BrowserRouter>
-          <NotifProvider>
-            <App />
-          </NotifProvider>
-        </BrowserRouter>
-      </Provider>
-    </AutoLogout>
+    <BrowserRouter>
+      <AuthProvider>
+        <AutoLogout>
+          <Provider store={store}>
+            <NotifProvider>
+              <App />
+            </NotifProvider>
+          </Provider>
+        </AutoLogout>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

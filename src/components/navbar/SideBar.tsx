@@ -3,8 +3,10 @@ import { Menu, MenuProps, Typography } from 'antd'
 import Sider from 'antd/es/layout/Sider'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useUser } from '../../hooks/useUser';
 import { user_role } from '../../utils/code._status';
+import { useSession } from '../layouts/AuthProvider';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../libs/redux/store';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -63,7 +65,8 @@ const typeBar = (role?: number) => {
 
 function SideBar() {
     const [collapsed, setCollapsed] = useState(false);
-    const { user } = useUser()
+    const { user } = useSession()
+    const { company } = useSelector((state: RootState) => state)
 
     return (
         <Sider
@@ -82,7 +85,7 @@ function SideBar() {
                 }
             >
                 <Link to={"/"}>
-                    {!collapsed ? "Kos Abdi" : ""}
+                    {!collapsed ? company.data.name : ""}
                 </Link>
             </Typography.Title>
             <div className="demo-logo-vertical max-h-screen" />

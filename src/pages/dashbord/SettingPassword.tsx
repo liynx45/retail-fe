@@ -1,12 +1,12 @@
 import { Button, Form, Input, InputNumber, Typography, message } from 'antd'
 import React from 'react'
 import axiosPrivate from '../../libs/axios'
-import { useUser } from '../../hooks/useUser'
 import useLoading from '../../hooks/useLoading'
+import { useSession } from '../../components/layouts/AuthProvider'
 
 function SettingPassword() {
 
-    const { user } = useUser()
+    const { user } = useSession()
     const [form] = Form.useForm()
     const { isLoading, setLoading } = useLoading()
 

@@ -1,17 +1,14 @@
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Flex, Form, Input, Typography, message } from 'antd'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axiosPrivate from "../../libs/axios/index"
 import useLoading from '../../hooks/useLoading'
-import axios from 'axios'
-import { useUser } from '../../hooks/useUser'
 
 function Register() {
     const [form] = Form.useForm()
     const { isLoading, setLoading } = useLoading()
     const navigate = useNavigate()
-    const { status } = useUser()
 
     const registerHandler = async () => {
         setLoading("loading")

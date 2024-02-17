@@ -1,20 +1,20 @@
 import { Form, Input, InputNumber, Typography, message } from 'antd'
 import React from 'react'
-import { useUser } from '../../hooks/useUser'
 import axiosPrivate from '../../libs/axios'
 import { Link } from 'react-router-dom'
 import useLoading from '../../hooks/useLoading'
+import { useSession } from '../../components/layouts/AuthProvider'
 
 function SettingVerify() {
 
-    const { user, setUser } = useUser()
+    const { user } = useSession()
     const [form] = Form.useForm()
     const { isLoading, setLoading } = useLoading()
 
     const handlerCode = async () => {
         setLoading("loading")
         try {
-            const get = await axiosPrivate.get(`/api/users/${user.username}/code`)
+            const get = await axiosPrivate.get(`/api/users/${user?.username}/code`)
             if (get.status === 200) {
                 message.success("Code verifikasi sudah dikirim")
                 setLoading("success")
@@ -34,10 +34,7 @@ function SettingVerify() {
         try {
             const post = await axiosPrivate.post(`/api/users/${user.username}/verify`, reqData)
             if (post.status === 200) {
-                setUser({
-                    ...user,
-                    verify: true
-                })
+                user.verify = true
                 setLoading("success")
                 message.success("Akun berhasil diverifikasi")
             }

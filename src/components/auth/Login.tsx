@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useLoading from '../../hooks/useLoading';
 import { encryptData } from '../../libs/crypto';
 import axios from 'axios';
-import { useUser } from '../../hooks/useUser';
+import { useSession } from '../layouts/AuthProvider';
 
 
 function Login() {
@@ -12,7 +12,7 @@ function Login() {
     const [form] = Form.useForm();
     const navigate = useNavigate()
     const { isLoading, setLoading } = useLoading()
-    const { setStatus, setUser } = useUser()
+    const { setStatus, setUser } = useSession()
 
     const submit = async () => {
 

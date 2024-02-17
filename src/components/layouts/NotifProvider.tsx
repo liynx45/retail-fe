@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { INotification } from '../../types/schema'
-import { useUser } from '../../hooks/useUser'
 import axiosPrivate from '../../libs/axios'
+import { useSession } from './AuthProvider'
 
 const NotifContext = React.createContext<any>([])
 
@@ -17,7 +17,7 @@ function NotifProvider({
 }) {
 
     const [notif, setNotif] = useState<INotification[]>([])
-    const { status } = useUser()
+    const { status } = useSession()
 
     const fetchNotif = async () => {
         try {

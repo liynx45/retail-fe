@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Route, RouteProps, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { useUser } from './hooks/useUser';
 import HomePage from './pages/views/HomePage';
 import Contact from './pages/views/Contact';
 import Room from './pages/views/Room';
@@ -27,6 +26,11 @@ import SettingUser from './pages/dashbord/SettingUser';
 import SettingPassword from './pages/dashbord/SettingPassword';
 import Order from './pages/views/Order';
 import SettingVerify from './pages/dashbord/SettingVerify';
+import { useSession } from './components/layouts/AuthProvider';
+import SettingCompany from './pages/dashbord/SettingCompany';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from './libs/redux/store';
+import { fetchCompany } from './services/redux';
 
 const privateRoute = (access: number[], role: number) => {
   if (access.includes(role)) {
@@ -117,33 +121,16 @@ function App() {
   //   }
   // ])
 
-  const location = useLocation()
-  const navigate = useNavigate()
-  const { status, user } = useUser()
+  const { pathname } = useLocation()
+  const { user } = useSession()
+  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    if (location.pathname.startsWith("/auth")) {
-      if (status === "unauthorized") {
-        if (location.pathname !== "/auth/register") {
-          navigate("/auth/login")
-        }
-      } else if (status === "authorized") {
-        navigate("/dashbord")
-      }
-    }
-
-    if (location.pathname.startsWith("/dashbord")){
-      if (status === "unauthorized") {
-        navigate("/auth/login")
-      }
-    }
-    
-    console.log("App Root status :", status)
-  }, [location.pathname, status])
-
+    dispatch(fetchCompany())
+  }, [])
   return (
     <>
-      {!location.pathname.startsWith("/auth") && !location.pathname.startsWith("/dashbord") && <NavBar />}
+      {!pathname.startsWith("/auth") && !pathname.startsWith("/dashbord") && <NavBar />}
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path="kontak" element={<Contact />} />
@@ -193,6 +180,7 @@ function App() {
             <Route path='user' element={<SettingUser />} />
             <Route path='password' element={<SettingPassword />} />
             <Route path='verifikasi' element={<SettingVerify />} />
+            <Route path='company' element={<SettingCompany />} />
           </Route>
         </Route>
       </Routes>

@@ -9,10 +9,10 @@ import { Avatar, Badge, Breadcrumb, Flex, Layout, theme } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import NotifModal from '../cards/ModalNotif';
 import UserModal from '../cards/ModalUser';
-import { useUser } from '../../hooks/useUser';
 import SideBar from '../navbar/SideBar';
 import { useNotif } from './NotifProvider';
 import { INotification } from '../../types/schema';
+import { useSession } from './AuthProvider';
 
 
 const { Header, Content, Footer } = Layout;
@@ -25,9 +25,8 @@ const DashbordLayout: React.FC = () => {
   const { pathname } = useLocation()
   const [isUserModal, setIsUserModal] = useState<boolean>(false)
   const [isNotifModal, setIsNotifModal] = useState<boolean>(false)
-  const { user, refresh } = useUser()
+  const { user } = useSession()
   const { notif } = useNotif()
-  const location = useLocation()
 
   const handlerUserModal = () => {
     setIsUserModal(prev => !prev)
@@ -37,11 +36,6 @@ const DashbordLayout: React.FC = () => {
     setIsNotifModal(prev => !prev)
   }
 
-
-  useEffect(() => {
-    refresh()
-  }, [location.pathname])
-  
   return (
     <Layout style={{ minHeight: '100vh' }} >
       <SideBar />

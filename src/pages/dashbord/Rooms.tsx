@@ -1,4 +1,4 @@
-import { Card, Flex, Modal, Pagination, PaginationProps, Popconfirm, Space, Statistic, Table, TableColumnsType, Typography, message } from 'antd'
+import { Card, Flex, Modal, Pagination, PaginationProps, Popconfirm, Space, Statistic, Table, TableColumnsType, TableProps, Typography, message } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { DeleteOutlined, DownCircleTwoTone, EditOutlined, EyeOutlined, FastBackwardFilled, GlobalOutlined, HomeFilled, HomeOutlined, MenuFoldOutlined, UpCircleTwoTone } from '@ant-design/icons';
 import axiosPrivate from '../../libs/axios/index'
@@ -12,8 +12,6 @@ import { columnRooms, statusRoom } from '../../utils';
 import { IRoom } from '../../types/schema';
 import { IOptionProps } from '../../types/input';
 import { removeRooms } from '../../libs/redux/slices/roomSlice';
-import { user_role } from '../../utils/code._status';
-import { useUser } from '../../hooks/useUser';
 
 export interface RoomType {
     id: string;
@@ -84,7 +82,7 @@ function Rooms() {
         }))
     }
 
-    const columns: TableColumnsType<RoomType> = [
+    const columns: TableProps<RoomType>["columns"] = [
         {
             title: "ID",
             key: "id",
@@ -92,7 +90,7 @@ function Rooms() {
             hidden: true
         },
         {
-            key: "id",
+            key: "name",
             title: "Name",
             dataIndex: "name"
         },
@@ -125,7 +123,7 @@ function Rooms() {
             title: "Fasilitas",
             key: "fasilitas",
             render: (e, record) => (
-                <div className='text-center'>
+                <div className='text-center' key={`facility-${record.id}`}>
                     <button
                         onClick={() => handlerfacility(record.facility)}
                         className='text-md hover:bg-orange-400 hover:text-white bg-[#fed7aa] border-[#fb923c] border px-2 text-[#f97316] rounded-md'
@@ -141,7 +139,7 @@ function Rooms() {
             key: "status",
             render(value, record, index) {
                 const result = statusRoom(value)
-                return <span className={result?.class} >{result?.label}</span>
+                return <span key={`status-${record.id}`} className={result?.class} >{result?.label}</span>
             },
         },
         {
@@ -153,7 +151,7 @@ function Rooms() {
             title: "Action",
             key: "action",
             render: (e, record) => (
-                <div className='flex gap-4'>
+                <div className='flex gap-4' key={`actions-${record.id}`}>
                     <Popconfirm
                         okType='default'
                         title="Apakah anda yankin ingin menghapus"
@@ -200,8 +198,8 @@ function Rooms() {
                             columns={columns}
                             dataSource={rooms.data.map((room: IRoom) => columnRooms(room))}
                             pagination={false}
-                            loading={rooms.status === 'loading'
-                            }
+                            loading={rooms.status === 'loading'}
+                            key={new Date().getTime()}
                         />
                     </div>
                     <Pagination

@@ -1,12 +1,10 @@
-import { Typography } from 'antd'
 import React from 'react'
-import { useUser } from '../../hooks/useUser'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../libs/redux/store'
+import { useSession } from '../../components/layouts/AuthProvider'
+
 
 function SettingMain() {
 
-    const { user } = useUser()
+    const { user } = useSession()
 
     return (
         <div className=' p-6 rounded-md mr-6 '>

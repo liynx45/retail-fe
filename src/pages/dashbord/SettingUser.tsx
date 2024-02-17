@@ -1,17 +1,19 @@
 import { Form, Input, Typography, message } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import { useUser } from '../../hooks/useUser'
 import axiosPrivate from '../../libs/axios'
 import { UploadOutlined } from '@ant-design/icons'
 import useLoading from '../../hooks/useLoading'
+import { useSession } from '../../components/layouts/AuthProvider'
 
 function SettingUser() {
 
-    const { user, setUser } = useUser()
+    const { user, setUser } = useSession()
     const [form] = Form.useForm()
     const photo = useRef<HTMLInputElement>(null)
     const { isLoading, setLoading } = useLoading()
     const [profile, setProfile] = useState<string>("")
+
+    console.log(user);
 
 
     const handlerUser = async () => {
@@ -25,14 +27,21 @@ function SettingUser() {
             }
             const update = await axiosPrivate.patch(`/api/users/${user?.username}`, reqData)
             if (update.status === 200) {
-                setUser({
-                    ...user,
+                setUser(prev => ({
+                    ...prev,
                     username: update.data.result.username,
                     last_name: update.data.result.user_info.last_name,
                     first_name: update.data.result.user_info.first_name,
                     role: update.data.result.role,
-                    profile: update.data.result.user_info.profile
-                })
+                    profile: update.data.result.user_info.profile,
+                }))
+                if (reqData.email) {
+                    setUser(prev => ({
+                        ...prev,
+                        email: update.data.result.email,
+                        verify: false
+                    }))
+                }
                 message.success("Sukses")
                 setLoading("success")
                 form.resetFields()
@@ -42,6 +51,7 @@ function SettingUser() {
             setLoading("success")
         }
     }
+
 
     const handlerProfile = async () => {
         setLoading("loading")
@@ -57,10 +67,10 @@ function SettingUser() {
                 if (update.status === 200) {
                     message.success("Sukses mengganti profile")
                     setLoading("success")
-                    setUser({
-                        ...user,
+                    setUser(prev => ({
+                        ...prev,
                         profile: update.data.result.profile
-                    })
+                    })) 
                 }
             } else {
                 message.warning("Masukan foto")

@@ -75,13 +75,25 @@ const fetchLogin = createAsyncThunk(
     }
 )
 
-
-
+const fetchCompany = createAsyncThunk(
+    "company",
+    async(_, thunkAPI) => {
+        try {
+            const get = await axiosPrivate.get("/api/company")
+            if (get.status === 200) {
+                return get.data.result
+            }
+        } catch(e: any){
+            return thunkAPI.rejectWithValue(e.response.data.errors)
+        }
+    }
+)
 
 export {
     fetchRoom,
     fetchfacility,
     fetchCategory,
     fetchUsers,
-    fetchLogin
+    fetchLogin,
+    fetchCompany
 }

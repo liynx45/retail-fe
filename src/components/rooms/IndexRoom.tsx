@@ -1,6 +1,4 @@
 import { Carousel } from 'antd'
-import React, { useEffect } from 'react'
-import PaginationRoom from './PaginationRoom'
 
 
 function IndexRoom() {
@@ -22,7 +20,6 @@ function IndexRoom() {
                 <img src="" className='w-full h-[300px] bg-slate-400' alt="" />
             </div>
         </Carousel>
-        <PaginationRoom />
       </div>
     </div>
   )
