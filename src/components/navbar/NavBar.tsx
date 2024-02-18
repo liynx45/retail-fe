@@ -1,11 +1,13 @@
+import { RootState } from '../../libs/redux/store'
 import { Flex, Typography } from 'antd'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-import { RootState } from '../../libs/redux/store'
 
 function NavBar() {
+
     const accessToken = window.localStorage.getItem(process.env.REACT_APP_LOCAL_KEY!)
+
     const linkTab = [
         {
             key: "1",
@@ -25,7 +27,7 @@ function NavBar() {
         {
             key: "4",
             title: "Masuk",
-            href: accessToken ? "/dashbord" : "/auth/login"
+            href: accessToken ? "/dashboard" : "/auth/login"
         }
     ]
 

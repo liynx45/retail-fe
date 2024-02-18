@@ -3,9 +3,9 @@ import { Menu, MenuProps, Typography } from 'antd'
 import Sider from 'antd/es/layout/Sider'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { user_role } from '../../utils/code._status';
-import { useSession } from '../layouts/AuthProvider';
 import { useSelector } from 'react-redux';
+import { USER_ROLE } from '../../utils/codes';
+import { useSession } from '../../context/AuthProvider';
 import { RootState } from '../../libs/redux/store';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -27,36 +27,36 @@ function menuItem(
 
 const typeBar = (role?: number) => {
     const itemsMember = [
-        menuItem(<Link to={"/dashbord"}>Dashbord</Link>, '1', <PieChartOutlined />),
+        menuItem(<Link to={"/dashboard"}>Dashbord</Link>, '1', <PieChartOutlined />),
         menuItem(<span>Pembayaran</span>, '5', <WalletOutlined />, [
-            menuItem(<Link to={"/dashbord/pembayaran"}>Tagihan</Link>, '7'),
-            menuItem(<Link to={"/dashbord/pembayaran/riwayat"}>Riwayat</Link>, '8')
+            menuItem(<Link to={"/dashboard/pembayaran"}>Tagihan</Link>, '7'),
+            menuItem(<Link to={"/dashboard/pembayaran/riwayat"}>Riwayat</Link>, '8')
         ]),
-        menuItem(<Link to={"/dashbord/setelan"}>Setelan</Link>, '12', <SettingOutlined />),
+        menuItem(<Link to={"/dashboard/setelan"}>Setelan</Link>, '12', <SettingOutlined />),
     ]
 
     const itemsAdmin = [
-        menuItem(<Link to={"/dashbord"}>Dashbord</Link>, '1', <PieChartOutlined />),
-        menuItem(<Link to={"/dashbord/user"}>User Master</Link>, '2', <UserOutlined />),
+        menuItem(<Link to={"/dashboard"}>Dashbord</Link>, '1', <PieChartOutlined />),
+        menuItem(<Link to={"/dashboard/user"}>User Master</Link>, '2', <UserOutlined />),
         menuItem(<span>Ruang</span>, "6", <HomeOutlined />, [
-            menuItem(<Link to={"/dashbord/ruang"}>Daftar Ruang</Link>, '3'),
-            menuItem(<Link to={"/dashbord/ruang/tambah"}>Tambah Ruang</Link>, '4')
+            menuItem(<Link to={"/dashboard/ruang"}>Daftar Ruang</Link>, '3'),
+            menuItem(<Link to={"/dashboard/ruang/tambah"}>Tambah Ruang</Link>, '4')
         ]),
         menuItem(<span >Pembayaran</span>, '5', <WalletOutlined />, [
-            menuItem(<Link to={"/dashbord/pembayaran"}>Tagihan</Link>, '7'),
-            menuItem(<Link to={"/dashbord/pembayaran/riwayat"}>Riwayat</Link>, '8')
+            menuItem(<Link to={"/dashboard/pembayaran"}>Tagihan</Link>, '7'),
+            menuItem(<Link to={"/dashboard/pembayaran/riwayat"}>Riwayat</Link>, '8')
         ]),
         menuItem(<span>Laporan</span>, '9', <FileSearchOutlined />, [
-            menuItem(<Link to={"/dashbord/keuangan"}>Keuangan</Link>, '10'),
-            menuItem(<Link to={"/dashbord/keuangan/analisis"}>Analisis Kerja</Link>, '11')
+            menuItem(<Link to={"/dashboard/keuangan"}>Keuangan</Link>, '10'),
+            menuItem(<Link to={"/dashboard/keuangan/analisis"}>Analisis Kerja</Link>, '11')
         ]),
-        menuItem(<Link to={"/dashbord/setelan"}>Setelan</Link>, '12', <SettingOutlined />),
+        menuItem(<Link to={"/dashboard/setelan"}>Setelan</Link>, '12', <SettingOutlined />),
     ];
 
     switch (role) {
-        case (user_role.MEMBER):
+        case (USER_ROLE.MEMBER):
             return itemsMember
-        case (user_role.ADMIN):
+        case (USER_ROLE.ADMIN):
             return itemsAdmin
     }
 

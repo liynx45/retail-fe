@@ -1,6 +1,6 @@
 import { createSlice, isAction } from "@reduxjs/toolkit";
-import { fetchRoom } from "../../../services/redux";
 import { IRoom } from "../../../types/schema";
+import { fetchRoom } from "../../../services/redux";
 
 interface RoomsRedux {
     status: "idle" | "loading" | "success" | "error";

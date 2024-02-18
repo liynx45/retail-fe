@@ -1,6 +1,6 @@
 import React from "react"
+import { ROOM_STATUS, USER_ROLE } from "./codes"
 import { IFacility, IRoom } from "../types/schema"
-import { status_room, user_role } from "./code._status"
 
 const columnRooms = (req: IRoom) => {
     const result = {
@@ -23,43 +23,42 @@ const columnRooms = (req: IRoom) => {
 
 const userRole = (code: number) => {
     switch (code) {
-        case user_role.ADMIN:
+        case USER_ROLE.ADMIN:
             return {
                 class: "text-orange-500 py-1 px-2 bg-orange-200 rounded-md border border-orange-400",
                 label: "Admin"
             }
-        case user_role.KASIR:
+        case USER_ROLE.KASIR:
             return {
                 class: "text-cyan-500 py-1 px-2 bg-cyan-200 rounded-md border border-cyan-400",
                 label: "Kasir"
             }
-        case user_role.MEMBER:
+        case USER_ROLE.MEMBER:
             return {
                 class: "text-sky-500 py-1 px-2 bg-sky-200 rounded-md border border-sky-400",
                 label: "Member"
             }
-
     }
 }
 
 const statusRoom = (code: number) => {
     switch (code) {
-        case status_room.AVAILABLE:
+        case ROOM_STATUS.AVAILABLE:
             return {
                 class: "text-green-500 py-1 px-2 bg-green-200 rounded-md border border-green-400",
                 label: "Tersedia"
             }
-        case status_room.MAINTANCE:
+        case ROOM_STATUS.MAINTANCE:
             return {
                 class: "text-orange-500 py-1 px-2 bg-orange-200 rounded-md border border-orange-400",
                 label: "Perawatan"
             }
-        case status_room.PENDING:
+        case ROOM_STATUS.PENDING:
             return {
                 class: "text-sky-500 py-1 px-2 bg-sky-200 rounded-md border border-sky-400",
                 label: "Pending"
             }
-        case status_room.RENT:
+        case ROOM_STATUS.RENT:
             return {
                 class: "text-red-500 py-1 px-2 bg-red-200 rounded-md border border-red-400",
                 label: "Disewa"

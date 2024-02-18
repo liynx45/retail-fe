@@ -6,9 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import AutoLogout from './components/layouts/AutoLogout';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import NotifProvider from './components/layouts/NotifProvider';
-import AuthProvider from './components/layouts/AuthProvider';
 import store from './libs/redux/store';
+import AuthProvider from './context/AuthProvider';
+import NotifProvider from './context/NotifProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

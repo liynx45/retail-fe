@@ -1,10 +1,10 @@
 import { Button, Form, Input, Typography, message } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
-import useLoading from '../../hooks/useLoading';
-import { encryptData } from '../../libs/crypto';
 import axios from 'axios';
-import { useSession } from '../layouts/AuthProvider';
+import useLoading from '../../hooks/useLoading';
+import { useSession } from '../../context/AuthProvider';
+import { encryptData } from '../../libs/crypto';
 
 
 function Login() {
@@ -41,7 +41,7 @@ function Login() {
                 })
                 setUser(reqLogin.data.user)
                 setStatus("authorized")
-                navigate("/dashbord")
+                navigate("/dashboard")
                 form.resetFields()
                 setLoading("success")
             }

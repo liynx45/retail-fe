@@ -1,8 +1,8 @@
 import { Badge, Layout, Tabs } from 'antd'
 import React from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { useSession } from './AuthProvider'
-import { user_role } from '../../utils/code._status'
+import { useSession } from '../../context/AuthProvider'
+import { USER_ROLE } from '../../utils/codes'
 
 const SettingLayout: React.FC = () => {
 
@@ -11,17 +11,17 @@ const SettingLayout: React.FC = () => {
     const { pathname } = useLocation()
 
     const handlerTabs = (key: string) => {
-        if (key !== "umum") {
-            navigate(`/dashbord/setelan/${key}`)
+        if (key !== "setelan") {
+            navigate(`/dashboard/setelan/${key}`)
         } else {
-            navigate(`/dashbord/setelan`)
+            navigate(`/dashboard/setelan`)
         }
     }
 
     const menu = [
         {
             label: "Umum",
-            key: "umum",
+            key: "setelan",
         },
         {
             label: "Company",
@@ -29,7 +29,7 @@ const SettingLayout: React.FC = () => {
         },
         {
             label: "User",
-            key: "user?",
+            key: "user",
         },
         {
             label: "Password",
@@ -49,7 +49,7 @@ const SettingLayout: React.FC = () => {
                 <div className='flex flex-col gap-2 min-h-[55vh] p-4 w-[170px]'>
                     {
                         menu.map((path: { label: string, key: string }, i: number) => {
-                            if (user?.role !== user_role.ADMIN && path.key === "company") {
+                            if (user?.role !== USER_ROLE.ADMIN && path.key === "company") {
                                 return null
                             } else {
                                 return (
@@ -57,8 +57,13 @@ const SettingLayout: React.FC = () => {
                                         <div
                                             key={path.key}
                                             onClick={() => handlerTabs(path.key)}
-                                            className={'cursor-pointer min-w-[120px] px-6 rounded-md py-2 bg-slate-100 hover:bg-slate-300 active:scale-90 transition'}
-                                            style={pathname.split("/").slice(-1).toString() === path.key ? {background: "#38bdf8"} : {}}
+                                            className={'cursor-pointer min-w-[120px] px-6 rounded-md py-2 bg-slate-100 hover:bg-slate-300 active:scale-95 transition'}
+                                            style={
+                                                pathname.split("/").slice(-1).toString() === path.key ? {
+                                                    background: "#38bdf8"
+                                                }: pathname.split("/").slice(-1).toString() === path.key ? {
+                                                    background: "#38bdf8"
+                                                } : {}}
                                             >
                                             {path.label}
                                         </div>

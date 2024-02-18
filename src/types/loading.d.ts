@@ -1,1 +1,0 @@
-export type LoadingProps = "idle" | "loading" | "error" | "success"

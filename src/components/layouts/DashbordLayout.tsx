@@ -7,12 +7,13 @@ import {
 } from '@ant-design/icons';
 import { Avatar, Badge, Breadcrumb, Flex, Layout, theme } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import NotifModal from '../cards/ModalNotif';
-import UserModal from '../cards/ModalUser';
-import SideBar from '../navbar/SideBar';
-import { useNotif } from './NotifProvider';
+import { useSession } from '../../context/AuthProvider';
+import { useNotif } from '../../context/NotifProvider';
+import UserModal from '../../components/modal/ModalUser';
+import NotifModal from '../../components/modal/ModalNotif';
 import { INotification } from '../../types/schema';
-import { useSession } from './AuthProvider';
+import SideBar from '../../components/navbar/SideBar';
+
 
 
 const { Header, Content, Footer } = Layout;

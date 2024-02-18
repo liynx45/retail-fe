@@ -110,8 +110,10 @@ interface IUser {
   interface ICompanyInfo {
     id: string;
     name: string;
-    alamat: string;
-    no: number;
+    address: string;
+    phone: number;
+    email: string;
+    about: string;
     owner: string;
     banner: IBannerCompany[];
   }

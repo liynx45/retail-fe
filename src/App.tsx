@@ -1,36 +1,36 @@
+import Redirect from './components/Redirect';
+import { useSession } from './context/AuthProvider';
+import { AppDispatch } from './libs/redux/store';
+import AddRoom from './pages/admin/AddRoom';
+import AnalyticFinance from './pages/admin/Finance/AnalyticFinance';
+import Facility from './pages/admin/Room/Facility';
+import Finance from './pages/admin/Finance';
+import HistoryPayment from './pages/admin/Payment/HistoryPayment';
+import Payment from './pages/admin/Payment';
+import Rooms from './pages/admin/Rooms';
+import Users from './pages/admin/Users';
+import { fetchCompany } from './services/redux';
+import { USER_ROLE } from './utils/codes';
 import React, { useEffect } from 'react';
-import { Route, RouteProps, Routes, useLocation, useNavigate } from 'react-router-dom';
-import HomePage from './pages/views/HomePage';
-import Contact from './pages/views/Contact';
-import Room from './pages/views/Room';
-import About from './pages/views/About';
+import { useDispatch } from 'react-redux';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import SettingLayout from './components/layouts/SettingLayout';
+import Setting from './pages/admin/Setting';
+import SettingUser from './pages/admin/Setting/SettingUser';
+import SettingPassword from './pages/admin/Setting/SettingPassword';
+import SettingVerify from './pages/admin/Setting/SettingVerify';
+import SettingCompany from './pages/admin/Setting/SettingCompany';
+import DashbordLayout from './components/layouts/DashbordLayout';
+import Dashbord from './pages/admin/Dashbord';
+import HomePage from './pages/home/HomePage';
+import Contact from './pages/home/Contact';
+import Room from './pages/home/Room';
+import Order from './pages/home/Order';
+import About from './pages/home/About';
 import AuthLayout from './components/layouts/AuthLayout';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
-import DashbordLayout from './components/layouts/DashbordLayout';
-import Dashbord from './pages/dashbord/Dashbord';
-import Users from './pages/dashbord/Users';
-import Rooms from './pages/dashbord/Rooms';
-import AddRoom from './pages/dashbord/AddRoom';
-import Payment from './pages/dashbord/Payment';
-import Finance from './pages/dashbord/Finance';
-import AnalyticFinance from './pages/dashbord/AnalyticFinance';
 import NavBar from './components/navbar/NavBar';
-import HistoryPayment from './pages/dashbord/HistoryPayment';
-import Redirect from './components/Redirect';
-import Facility from './pages/dashbord/Facility';
-import { user_role } from './utils/code._status';
-import SettingLayout from './components/layouts/SettingLayout';
-import SettingMain from './pages/dashbord/SettingMain';
-import SettingUser from './pages/dashbord/SettingUser';
-import SettingPassword from './pages/dashbord/SettingPassword';
-import Order from './pages/views/Order';
-import SettingVerify from './pages/dashbord/SettingVerify';
-import { useSession } from './components/layouts/AuthProvider';
-import SettingCompany from './pages/dashbord/SettingCompany';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from './libs/redux/store';
-import { fetchCompany } from './services/redux';
 
 const privateRoute = (access: number[], role: number) => {
   if (access.includes(role)) {
@@ -78,7 +78,7 @@ function App() {
   //         element: <About />
   //       },
   //       {
-  //         path: "dashbord",
+  //         path: "dashboard",
   //         element: <DashbordLayout />,
   //         children: [
   //           {
@@ -128,9 +128,10 @@ function App() {
   useEffect(() => {
     dispatch(fetchCompany())
   }, [])
+  
   return (
     <>
-      {!pathname.startsWith("/auth") && !pathname.startsWith("/dashbord") && <NavBar />}
+      {!pathname.startsWith("/auth") && !pathname.startsWith("/dashboard") && <NavBar />}
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path="kontak" element={<Contact />} />
@@ -143,22 +144,22 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
-        <Route path="dashbord" element={<DashbordLayout />}>
+        <Route path="dashboard" element={<DashbordLayout />}>
           <Route index element={<Dashbord />} />
           {
-            privateRoute([user_role.ADMIN], user?.role!) ?
+            privateRoute([USER_ROLE.ADMIN], user?.role!) ?
               <Route path="user" element={<Users />} /> :
-              <Route path='user' element={<Redirect to="/dashbord" />} />
+              <Route path='user' element={<Redirect to="/dashboard" />} />
           }
           <Route path="ruang">
             {
-              privateRoute([user_role.ADMIN], user?.role!) ?
+              privateRoute([USER_ROLE.ADMIN], user?.role!) ?
                 <>
                   <Route index element={<Rooms />} />
                   <Route path="tambah" element={<AddRoom />} />
                   <Route path='fasilitas' element={<Facility />} />
                 </> :
-                <Route index element={<Redirect to="/dashbord" />} />
+                <Route index element={<Redirect to="/dashboard" />} />
             }
           </Route>
           <Route path="pembayaran">
@@ -167,16 +168,16 @@ function App() {
           </Route>
           <Route path='keuangan'>
             {
-              privateRoute([user_role.ADMIN], user?.role!) ?
+              privateRoute([USER_ROLE.ADMIN], user?.role!) ?
                 <>
                   <Route index element={<Finance />} />
                   <Route path='analisis' element={<AnalyticFinance />} />
                 </> :
-                <Route index element={<Redirect to="/dashbord" />} />
+                <Route index element={<Redirect to="/dashboard" />} />
             }
           </Route>
           <Route path='setelan' element={<SettingLayout />}>
-            <Route index element={<SettingMain />} />
+            <Route index element={<Setting />} />
             <Route path='user' element={<SettingUser />} />
             <Route path='password' element={<SettingPassword />} />
             <Route path='verifikasi' element={<SettingVerify />} />
