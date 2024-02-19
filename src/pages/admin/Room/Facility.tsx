@@ -9,9 +9,8 @@ import { AppDispatch, RootState } from '../../../libs/redux/store';
 import axiosPrivate from '../../../libs/axios';
 import { fetchfacility } from '../../../services/redux';
 import { removeFacility } from '../../../libs/redux/slices/facilitySlice';
-import EditFacility from '../../../components/admin/room/facility/EditFacility';
 import ModalCategory from '../../../components/modal/ModalCategory';
-import AddFacility from '../../../components/admin/room/facility/AddFacility';
+import { AddFacility, EditFacility } from '../../../components/admin/room';
 
 export interface FacilityColumnProps {
   id: string;

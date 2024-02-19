@@ -1,6 +1,6 @@
 import useLoading from '../../../../hooks/useLoading';
 import axiosPrivate from '../../../../libs/axios';
-import { updateFacility } from '../../../../libs/redux/slices/facilitySlice';
+import { updateFacility } from '../../../../libs/redux';
 import { RootState } from '../../../../libs/redux/store';
 import { FacilityDrawerprops } from '../../../../pages/admin/Room/Facility';
 import { Button, Form, Input, InputNumber, Modal, Select, Typography, message } from 'antd'

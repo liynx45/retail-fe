@@ -1,6 +1,6 @@
 import useLoading from '../../../../hooks/useLoading'
 import axiosPrivate from '../../../../libs/axios'
-import { addFacility } from '../../../../libs/redux/slices/facilitySlice'
+import { addFacility } from '../../../../libs/redux'
 import { AppDispatch, RootState } from '../../../../libs/redux/store'
 import { fetchfacility } from '../../../../services/redux'
 import { Button, Form, Input, InputNumber, Select, Typography, message } from 'antd'

@@ -4,7 +4,7 @@ import Sider from 'antd/es/layout/Sider'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
-import { USER_ROLE } from '../../utils/codes';
+import { USER_ROLE } from '../../constants';
 import { useSession } from '../../context/AuthProvider';
 import { RootState } from '../../libs/redux/store';
 

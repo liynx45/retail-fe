@@ -6,7 +6,7 @@ import { Button, Flex, Form, Input, Modal, Select, Typography, message } from "a
 import { useDispatch } from "react-redux"
 import { useSearchParams } from "react-router-dom"
 import { IUser } from "../../types/schema"
-import { USER_ROLE } from "../../utils/codes"
+import { USER_ROLE } from "../../constants/status_code"
 
 const ModalEditUser = ({
     open,

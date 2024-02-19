@@ -2,7 +2,7 @@ import { Badge, Layout, Tabs } from 'antd'
 import React from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useSession } from '../../context/AuthProvider'
-import { USER_ROLE } from '../../utils/codes'
+import { USER_ROLE } from '../../constants/status_code'
 
 const SettingLayout: React.FC = () => {
 

@@ -5,7 +5,7 @@ import TextArea from "antd/es/input/TextArea"
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../libs/redux/store"
-import { updateRooms } from "../../../libs/redux/slices/roomSlice"
+import { updateRooms } from "../../../libs/redux"
 import { IFacility } from "../../../types/schema"
 import { RoomEditProps, RoomType } from "../../../pages/admin/Rooms"
 

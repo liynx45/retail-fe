@@ -2,11 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { fetchCompany } from "../../../services/redux"; 
 import { IBannerCompany, ICompanyInfo } from "../../../types/schema";
 
-interface companyProps {
-    id: string;
-    name: string;
-}
-
 interface companyRedux {
     status: "idle" | "loading" | "success" | "error";
     data: ICompanyInfo;

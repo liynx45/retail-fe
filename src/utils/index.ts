@@ -1,5 +1,5 @@
 import React from "react"
-import { ROOM_STATUS, USER_ROLE } from "./codes"
+import { ROOM_STATUS, USER_ROLE } from "../constants/status_code"
 import { IFacility, IRoom } from "../types/schema"
 
 const columnRooms = (req: IRoom) => {

@@ -10,27 +10,24 @@ import Payment from './pages/admin/Payment';
 import Rooms from './pages/admin/Rooms';
 import Users from './pages/admin/Users';
 import { fetchCompany } from './services/redux';
-import { USER_ROLE } from './utils/codes';
+import { USER_ROLE } from './constants/status_code';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import SettingLayout from './components/layouts/SettingLayout';
 import Setting from './pages/admin/Setting';
 import SettingUser from './pages/admin/Setting/SettingUser';
 import SettingPassword from './pages/admin/Setting/SettingPassword';
 import SettingVerify from './pages/admin/Setting/SettingVerify';
 import SettingCompany from './pages/admin/Setting/SettingCompany';
-import DashbordLayout from './components/layouts/DashbordLayout';
 import Dashbord from './pages/admin/Dashbord';
 import HomePage from './pages/home/HomePage';
 import Contact from './pages/home/Contact';
 import Room from './pages/home/Room';
 import Order from './pages/home/Order';
 import About from './pages/home/About';
-import AuthLayout from './components/layouts/AuthLayout';
-import Login from './components/auth/Login';
-import Register from './components/auth/Register';
-import NavBar from './components/navbar/NavBar';
+import { AuthLayout, DashbordLayout, SettingLayout } from './components/layouts';
+import { Login, Register } from './components/auth';
+import { NavBar } from './components/navbar';
 
 const privateRoute = (access: number[], role: number) => {
   if (access.includes(role)) {

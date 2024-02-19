@@ -6,7 +6,7 @@ import TextArea from 'antd/es/input/TextArea'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IFacility } from '../../types/schema'
-import { ROOM_STATUS } from '../../utils/codes'  
+import { ROOM_STATUS } from '../../constants/status_code'  
 import axiosPrivate from '../../libs/axios'
 
 const AddRoom: React.FC = () => {
