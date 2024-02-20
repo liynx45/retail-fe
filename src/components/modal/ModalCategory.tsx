@@ -1,6 +1,6 @@
 import { Input, Modal, Typography, message } from 'antd'
 import React, { useState } from 'react'
-import axiosPrivate from '../../libs/axios'
+import { axiosPrivate } from '../../libs/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../libs/redux/store';
 import useLoading from '../../hooks/useLoading';

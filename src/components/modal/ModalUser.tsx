@@ -1,5 +1,5 @@
 import { Flex, Image, Modal, message } from "antd"
-import axiosPrivate from "../../libs/axios/index"
+import { axiosPrivate } from "../../libs/axios"
 import { SettingOutlined } from "@ant-design/icons"
 import { Link, useNavigate } from "react-router-dom"
 import { userRole } from "../../utils"

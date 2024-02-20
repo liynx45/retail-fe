@@ -1,5 +1,5 @@
-import useLoading from '../../../hooks/useLoading'
-import axiosPrivate from '../../../libs/axios'
+import { useLoading } from '../../../hooks'
+import { axiosPrivate } from '../../../libs/axios'
 import { Form, Input, InputNumber, Typography, message } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'

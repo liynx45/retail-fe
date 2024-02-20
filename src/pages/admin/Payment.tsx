@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axiosPrivate from '../../libs/axios';
+import { axiosPrivate } from '../../libs/axios';
 
 
 

@@ -1,5 +1,5 @@
 import { DeleteFilled, FileAddOutlined } from "@ant-design/icons";
-import axiosPrivate from "../../../libs/axios";
+import { axiosPrivate } from "../../../libs/axios";
 import { Image, message } from "antd";
 import { useEffect, useState } from "react"
 import { RoomEditProps, RoomType } from "../../../pages/admin/Rooms";

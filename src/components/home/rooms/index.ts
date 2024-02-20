@@ -1,1 +1,2 @@
-export { default as IndexRoom } from "./IndexRoom"
+export { default as IndexRoom } from "./CarouselRoom"
+export * from "./components"

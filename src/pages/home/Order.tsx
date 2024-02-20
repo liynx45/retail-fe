@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RangePickerProps } from 'antd/es/date-picker'
 import { IRoom } from '../../types/schema'
-import axiosPrivate from '../../libs/axios'
 import { decryptData } from '../../libs/crypto'   
+import { axiosPrivate } from '../../libs/axios'
 
 function Order() {
 

@@ -1,6 +1,6 @@
 import { useSession } from '../../../context/AuthProvider'
 import useLoading from '../../../hooks/useLoading'
-import axiosPrivate from '../../../libs/axios'
+import { axiosPrivate } from '../../../libs/axios'
 import { Form, Input, InputNumber, Typography, message } from 'antd'
 import React from 'react'
 

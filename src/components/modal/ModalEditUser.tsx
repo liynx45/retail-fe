@@ -1,5 +1,5 @@
 import useLoading from "../../hooks/useLoading"
-import axiosPrivate from "../../libs/axios"
+import { axiosPrivate } from "../../libs/axios"
 import { updateUser } from "../../libs/redux/slices/usersSlice"
 import { AppDispatch } from "../../libs/redux/store"
 import { Button, Flex, Form, Input, Modal, Select, Typography, message } from "antd"

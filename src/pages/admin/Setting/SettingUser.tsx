@@ -1,6 +1,6 @@
 import { UploadOutlined } from '@ant-design/icons'
-import useLoading from '../../../hooks/useLoading'
-import axiosPrivate from '../../../libs/axios'
+import { useLoading } from '../../../hooks'
+import { axiosPrivate } from '../../../libs/axios'
 import { Form, Input, Typography, message } from 'antd'
 import React, { useRef, useState } from 'react'
 import { useSession } from '../../../context/AuthProvider'

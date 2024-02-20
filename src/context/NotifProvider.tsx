@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { INotification } from '../types/schema';
 import { useSession } from './AuthProvider';
-import axiosPrivate from '../libs/axios';
+import { axiosPrivate } from '../libs/axios';
 
 interface NotifProps {
     notif: INotification[];

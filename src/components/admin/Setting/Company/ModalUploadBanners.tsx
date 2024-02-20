@@ -1,6 +1,6 @@
 import { Image, Modal, Typography, message } from 'antd'
 import React, { SetStateAction, useEffect, useState } from 'react'
-import axiosPrivate from '../../../../libs/axios';
+import { axiosPrivate } from '../../../../libs/axios';
 import useLoading from '../../../../hooks/useLoading';
 import { DeleteFilled, FileAddOutlined } from '@ant-design/icons';
 import { IBannerCompany } from '../../../../types/schema';

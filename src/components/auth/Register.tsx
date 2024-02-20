@@ -2,8 +2,8 @@ import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Flex, Form, Input, Typography, message } from 'antd'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axiosPrivate from "../../libs/axios/index"
 import useLoading from '../../hooks/useLoading'
+import { axiosPublic } from '../../libs/axios'
 
 function Register() {
     const [form] = Form.useForm()
@@ -21,7 +21,7 @@ function Register() {
         }
 
         try {
-            const create = await axiosPrivate.post("/auth/register", data)
+            const create = await axiosPublic.post("/auth/register", data)
             if (create.status === 200) {
                 message.open({
                     content: "Success create user",

@@ -1,6 +1,6 @@
 import { Button, Form, Input, InputNumber, Select, SelectProps, Space, message } from "antd"
 import useLoading from "../../../hooks/useLoading"
-import axiosPrivate from "../../../libs/axios"
+import { axiosPrivate } from "../../../libs/axios"
 import TextArea from "antd/es/input/TextArea"
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"

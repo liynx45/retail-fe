@@ -11,7 +11,7 @@ import { removeRooms } from '../../libs/redux/slices/roomSlice';
 import Cards from '../../components/cards/Card';
 import RoomEdit from '../../components/admin/room/EditRoom';
 import { IRoom } from '../../types/schema';
-import axiosPrivate from '../../libs/axios';
+import { axiosPrivate } from '../../libs/axios';
 
 export interface RoomType {
     id: string;

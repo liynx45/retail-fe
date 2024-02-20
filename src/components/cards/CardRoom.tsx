@@ -8,23 +8,25 @@ import { encryptData } from '../../libs/crypto'
 interface CardRoomProps {
     data: IRoom
 }
-const CardRoom: React.FC<CardRoomProps> = ({data}) => {
+const CardRoom: React.FC<CardRoomProps> = ({ data }) => {
     const encrypt = encryptData(data.id).split("/").join("%6")
 
     return (
-        <div className='p-3 relative rounded-sm overflow-hidden cursor-pointer shadow-sm flex bg-slate-400 flex-col gap-3'>
-            <span className='absolute py-2 px-16 z-30 pointer-events-none bg-green-400 rotate-45 -right-12 top-6'>Tersedia</span>
-            <Image src={data.room_image[0].url} alt="" />
-            <div className='grid grid-cols-2'>
-                <div className='flex flex-col gap-2'>
-                    <span>{data.room_info?.name}</span>
-                    <span>Type :{data.room_info?.type}</span>
-                    <span>Rp. {data.price}</span>
+        <div className='p-3 relative  overflow-hidden cursor-pointer shadow-sm flex bg-slate-200 rounded-lg flex-col gap-3'>
+            <Image className='object-cover w-full rounded-lg' height={170} src={data.room_image[0].url} alt="" />
+            <div className='py-1 gap-2 flex flex-col justify-between'>
+                <div className='flex justify-between flex-start'>
+                    <div className='flex flex-col gap-2 h-20'>
+                        <h3 className='font-semibold'>{data?.room_info?.name}</h3>
+                        <p className='text-[14px]'>{data?.room_info?.desc}</p>
+                    </div>
+                    <div>
+                    <span className='py-0.5 px-2 rounded-lg bg-red-300 border border-red-400 text-[12px]'>Tersedia</span>
+                    </div>
                 </div>
-                <div className='flex flex-col gap-2'>
-                    <span>{`Luas :${data.room_info?.wide}x${data.room_info?.long}`}</span>
-                    <span>No Ruang : {data.no_room}</span>
-                    <Link to={`/ruang/${encrypt}`} className='px-6 w-fit py-1 bg-sky-400 rounded-md'>Pesan</Link>
+                <div className='flex gap-4 pt-2 items-center'>
+                    <Link to={data.no_room.toString()} className='text-white text-sm py-1 px-4 rounded-md bg-sky-400'>Detail</Link>
+                    <span className='font-semibold'>Rp. {data.price}</span>
                 </div>
             </div>
         </div>

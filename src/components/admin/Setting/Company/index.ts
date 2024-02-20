@@ -1,1 +1,1 @@
-export {default as ModalUploadBanners} from "./ModalUploadBanners"
+export { default as ModalUploadBanners } from "./ModalUploadBanners"

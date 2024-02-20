@@ -1,4 +1,4 @@
-import axiosPrivate from '../libs/axios';
+import { axiosPrivate } from "../libs/axios";
 import { decryptData, encryptData } from "../libs/crypto"
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'

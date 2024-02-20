@@ -6,7 +6,7 @@ import { IFacility } from '../../../types/schema';
 import useLoading from '../../../hooks/useLoading';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../libs/redux/store';
-import axiosPrivate from '../../../libs/axios';
+import { axiosPrivate } from '../../../libs/axios';
 import { fetchfacility } from '../../../services/redux';
 import { removeFacility } from '../../../libs/redux/slices/facilitySlice';
 import ModalCategory from '../../../components/modal/ModalCategory';

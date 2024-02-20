@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Cascader, Form, Input, InputNumber, Modal, message } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import useLoading from '../../../hooks/useLoading';
-import axiosPrivate from '../../../libs/axios';
+import { axiosPrivate } from '../../../libs/axios';
 import axios from 'axios';
 import TextArea from 'antd/es/input/TextArea';
 import { RootState } from '../../../libs/redux/store';
-import { updateCompany } from '../../../libs/redux/slices/companySlice';
-import ModalUploadBanners from '../../../components/admin/Setting/Company/ModalUploadBanners';
+import { updateCompany } from '../../../libs/redux';
+import { ModalUploadBanners } from '../../../components/admin';
 
 interface Option {
     value: string;

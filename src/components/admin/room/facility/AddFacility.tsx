@@ -1,5 +1,5 @@
 import useLoading from '../../../../hooks/useLoading'
-import axiosPrivate from '../../../../libs/axios'
+import { axiosPrivate } from '../../../../libs/axios'
 import { addFacility } from '../../../../libs/redux'
 import { AppDispatch, RootState } from '../../../../libs/redux/store'
 import { fetchfacility } from '../../../../services/redux'

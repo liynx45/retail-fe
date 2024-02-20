@@ -1,5 +1,5 @@
 import useLoading from '../../../../hooks/useLoading';
-import axiosPrivate from '../../../../libs/axios';
+import { axiosPrivate } from '../../../../libs/axios';
 import { updateFacility } from '../../../../libs/redux';
 import { RootState } from '../../../../libs/redux/store';
 import { FacilityDrawerprops } from '../../../../pages/admin/Room/Facility';

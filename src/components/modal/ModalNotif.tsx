@@ -1,7 +1,7 @@
 import { BellFilled } from "@ant-design/icons"
 import { useNotif } from "../../context/NotifProvider"
 import useLoading from "../../hooks/useLoading"
-import axiosPrivate from "../../libs/axios"
+import { axiosPrivate } from "../../libs/axios"
 import { Avatar, Badge, Drawer, List } from "antd"
 import { INotification } from "../../types/schema"
 

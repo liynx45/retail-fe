@@ -5,6 +5,7 @@ import axios from 'axios';
 import useLoading from '../../hooks/useLoading';
 import { useSession } from '../../context/AuthProvider';
 import { encryptData } from '../../libs/crypto';
+import { axiosPublic } from '../../libs/axios';
 
 
 function Login() {
@@ -26,11 +27,9 @@ function Login() {
 
         try {
             setStatus("loading")
-            const reqLogin = await axios.post("http://localhost:3001/auth/login", {
+            const reqLogin = await axiosPublic.post("/auth/login", {
                 username: username,
                 password: password
-            }, {
-                withCredentials: true
             })
             if (reqLogin.status === 200) {
                 window.localStorage.setItem(process.env.REACT_APP_LOCAL_KEY!, encryptData(reqLogin.data.accessToken))
