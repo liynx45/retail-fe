@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 type LoadingProps = "success" | "error" | "idle" | "loading"
+
 function useLoading(load?: boolean) {
     const [isLoading, setIsloading] = useState<LoadingProps>("idle")
 

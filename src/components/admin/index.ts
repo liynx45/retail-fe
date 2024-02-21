@@ -1,2 +1,2 @@
 export * from "./room"
-export * from "./Setting"
+export * from "./setting"

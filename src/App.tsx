@@ -23,12 +23,14 @@ import Dashbord from './pages/admin/Dashbord';
 import HomePage from './pages/home/HomePage';
 import Contact from './pages/home/Contact';
 import Room from './pages/home/Room';
-import Order from './pages/home/Order';
+import Order from './pages/home/room/Order';
 import About from './pages/home/About';
 import { AuthLayout, DashbordLayout, SettingLayout } from './components/layouts';
 import { Login, Register } from './components/auth';
 import { NavBar } from './components/navbar';
 import DetailRoom from './pages/home/room/DetailRoom';
+import axios from 'axios';
+import { getRoomById } from './services/api';
 
 const privateRoute = (access: number[], role: number) => {
   if (access.includes(role)) {
@@ -136,8 +138,10 @@ function App() {
         <Route path="ruang" >
           <Route index element={<Room />} />
           <Route path=':roomId' >
-            <Route index element={<DetailRoom />} />
-          <Route path=':orderId' element={<Order />} />
+            <Route index loader={async ({ params }) => {
+              return getRoomById(params.roomId!)
+            }} element={<DetailRoom />} />
+            <Route path=':orderId' element={<Order />} />
           </Route>
         </Route>
         <Route path="tentang" element={<About />} />

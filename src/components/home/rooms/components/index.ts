@@ -1,1 +1,5 @@
-export {default as ModalSearchRoom} from "./ModalSearchRoom"
+export { default as ModalSearchRoom } from "./ModalSearchRoom"
+export { default as ImageDetailRoom } from "./ImageDetailRoom"
+export { default as CommentDetailRoom } from "./CommentDetailRoom"
+export { default as PaymentCard } from "./PaymentCard"
+export { default as DetailRoomDesc } from "./DetailRoomDesc"

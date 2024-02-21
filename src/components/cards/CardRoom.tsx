@@ -25,7 +25,7 @@ const CardRoom: React.FC<CardRoomProps> = ({ data }) => {
                     </div>
                 </div>
                 <div className='flex gap-4 pt-2 items-center'>
-                    <Link to={data.no_room.toString()} className='text-white text-sm py-1 px-4 rounded-md bg-sky-400'>Detail</Link>
+                    <Link to={data.id.toString()} className='text-white text-sm py-1 px-4 rounded-md bg-sky-400'>Detail</Link>
                     <span className='font-semibold'>Rp. {data.price}</span>
                 </div>
             </div>
