@@ -24,7 +24,9 @@ function Order() {
     })
     const [total, setTotal] = useState<number>(0)
     const [expires, setExpires] = useState<Date>()
-    const { status, data } = useFetch<IRoom>(getRoomById(detailPay.roomId))
+    const { status, data } = useFetch<IRoom>({
+        fetch: getRoomById(detailPay.roomId)
+    })
 
 
     useEffect(() => {

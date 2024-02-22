@@ -7,42 +7,24 @@ import {
     ChartTypeRegistry,
     registerables
 } from 'chart.js';
-import { Bar, Chart } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 
 ChartJS.register(...registerables);
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-const data1: ChartData = {
-    labels,
-    datasets: [
-        {
-            label: 'Dataset 1',
-            data: [12, 34, 23, 52, 43],
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-            label: 'Dataset 2',
-            data: [12, 34, 23, 52, 43],
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
-    ],
-};
-
-interface useChartProps {
-    type: ChartType;
-    options: ChartOptions;
-    data: ChartData;
+interface useChartProps<T extends ChartType> {
+    type: T;
+    options: ChartOptions<T>;
+    data: ChartData<T>;
 }
 
-const useChart: React.FC<useChartProps> = ({ type, data, options }) => {
+const useChart = <T extends ChartType>({ type, data, options }: useChartProps<T>) => {
 
-    const [chartData, setChartData] = useState<ChartData>(data)
-    const [chartOptions, setChartOption] = useState<ChartOptions | undefined>(options)
+    const [chartData, setChartData] = useState<ChartData<T>>(data)
+    const [chartOptions, setChartOption] = useState<ChartOptions<T>>(options)
 
     useEffect(() => {
         setChartData(data)
-        setChartOption(options)        
+        setChartOption(options)
     }, [])
 
     return (

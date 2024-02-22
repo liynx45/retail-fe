@@ -1,50 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useLoading from './useLoading';
-import { AxiosResponse } from 'axios';
 import { ResultFetch } from '../services/api';
+import { useLocation } from 'react-router-dom';
 
-function useFetch<T>(fetchPromise: Promise<ResultFetch<T>>) {
+interface useFetchProps<T> {
+    fetch: Promise<ResultFetch<T>>,
+    query?: string
+}
+function useFetch<T>({ fetch, query }: useFetchProps<T>) {
 
-    const [toggle, setToggle] = useState<boolean>(false)
     const [fetching, setFething] = useState<boolean>(false)
     const [error, setError] = useState<unknown>("")
-    const [data, setData] = useState<T>();
+    const [data, setData] = useState<any>();
     const { isLoading, setLoading } = useLoading();
-
+    const { pathname } = useLocation()
+    let isFetch 
+    
     const fetchData = async () => {
         setLoading("loading")
         setFething(true)
         try {
-            const response = await fetchPromise as ResultFetch<T>
-            setLoading('success');
-            setData(response.result);
+            isFetch = true
+            if (isFetch) {
+                const response = await fetch
+                // console.log("fetch fase")
+                setLoading('success');
+                setData(response.result);
+                isFetch = false
+            }
         } catch (err: any) {
             setLoading('error');
             setError(err.response.data.erros)
-            console.error('Error fetching data:', error);
         } finally {
             setFething(false)
         }
     };
 
-    const reload = () => {
-        setToggle(prev => !prev)
-    }
-
     useEffect(() => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        fetchData()
-    }, [toggle])
-
     return {
         status: isLoading,
         data: data,
-        reload: reload,
-        fetching: fetching
-    };
+        reload: fetchData,
+        fetching: fetching,
+        error: error
+    }
 }
 
 export {

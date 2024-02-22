@@ -1,30 +1,57 @@
-import React, { FormEventHandler, useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../libs/redux/store'
-import { useSearchParams } from 'react-router-dom'
-import { MenuFoldOutlined } from '@ant-design/icons'
-import { fetchRoom } from '../../services/redux'
+import React, { useEffect,  useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import IndexRoom from '../../components/home/rooms/CarouselRoom'
 import { IRoom } from '../../types/schema'
 import CardRoom from '../../components/cards/CardRoom'
 import ListRoom from '../../components/home/rooms/ListRoom'
+import { useFetch } from '../../hooks'
+import { getRoom } from '../../services/api'
+import { Button, Card, Skeleton } from 'antd'
 
 function Room() {
 
-  const { rooms } = useSelector((state: RootState) => state)
-  const dispatch = useDispatch<AppDispatch>()
-  useEffect(() => {
-    dispatch(fetchRoom("?page=1&take=12"))
-  }, [])
+  const [params, setParams] = useState("?take=6")
+  const [data, setData] = useState<IRoom[]>([])
+  // const { data, status, reload } = useFetch<IRoom[]>({
+  //   fetch: getRoom(params)
+  // })
+
+
+  const fetchRoom = async() => {
+    const get = await getRoom<IRoom[]>(params)
+    if (get.status) {
+      setData(get.result!)
+    }
+  }
+
+   useEffect(() => {
+    fetchRoom()
+  }, [params])
 
   return (
     <div>
-      <IndexRoom />
-      <ListRoom>
+      {status === "loading" ? (
+        <div className='h-[200px] w-full flex justify-center items-center'>
+          <Skeleton.Image active />
+        </div>
+      ) : (
+        <IndexRoom />
+      )}
+      <ListRoom reload={fetchRoom} setParams={setParams}>
         {
-          rooms.data.map((room: IRoom, i: number) => (
-            <CardRoom key={room.id} data={room} />
-          ))
+          status === "loading" ? (
+            [...Array(6)].map((_: number, i: number) => (
+              <div key={i} className='h-[320px] flex flex-col justify-evenly p-4 border rounded-xl'>
+                <Skeleton.Image active />
+                <Skeleton.Input active />
+                <Skeleton.Button active />
+                <Skeleton.Button active />
+              </div>
+            ))
+          ) :
+            data && data.map((room: IRoom, i: number) => (
+              <CardRoom key={room.id} data={room} />
+            ))
         }
       </ListRoom>
     </div>

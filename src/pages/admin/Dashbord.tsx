@@ -7,7 +7,7 @@ import Cards from '../../components/cards/Card'
 
 function Dashbord() {
 
-  const Margin = useChart({
+  const Margin = useChart<"bar">({
     type: "bar",
     data: {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', "August", "September", "November", "Desember"],
@@ -43,7 +43,7 @@ function Dashbord() {
     }
   })
 
-  const Popular = useChart({
+  const Popular = useChart<"pie">({
     type: "pie",
     data: {
       labels: ["All", "Man", "Woman"],
@@ -79,7 +79,7 @@ function Dashbord() {
     }
   })
 
-  const MarginYear = useChart({
+  const MarginYear = useChart<'line'>({
     type: "line",
     data: {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', "August", "September", "November", "Desember"],

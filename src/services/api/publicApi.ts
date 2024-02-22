@@ -4,10 +4,11 @@ import { axiosPublic } from "../../libs/axios"
 const getRoom = async <T>(query: string): Promise<ResultFetch<T>> => {
     try {
         const get = await axiosPublic.get(`/api/rooms${query}`)
+        console.log("fetch api");
         if (get.status === 200) {
             return {
                 status: true,
-                result: get.data.result as T
+                result: get.data.data.result as T
             }
         } else {
             return {
