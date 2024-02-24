@@ -1,10 +1,11 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { decryptData, encryptData } from "../crypto";
 
 interface RetryQueueItem {
   resolve: (value?: any) => void;
   reject: (error?: any) => void;
   config: AxiosRequestConfig;
+  error: AxiosError;
 }
 
 const headers = {
@@ -17,7 +18,6 @@ const axiosPrivate = axios.create({
   headers: headers
 })
 
-let IsRefreshing = false
 const refreshAndRetryQueue: RetryQueueItem[] = [];
 
 axiosPrivate.interceptors.request.use(
@@ -36,18 +36,23 @@ axiosPrivate.interceptors.request.use(
   }
 );
 
+let IsRefreshing = false
 axiosPrivate.interceptors.response.use(
   (response) => {
     return response;
   },
   async (error) => {
-    const originalReq = error.config
+    const originalReq = error
     if (error.response && error.response.status === 401) {
+      if (error.response.status === 401 && error.config.url === "/auth/refresh") {
+        return new Promise<void>((resolve, reject) => {
+          reject(error)
+        })
+      }
       if (!IsRefreshing) {
         IsRefreshing = true
         try {
           const newAccessToken = await axiosPrivate.get("/auth/refresh")
-          IsRefreshing = true
           if (newAccessToken.status === 200) {
             window.localStorage.setItem(process.env.REACT_APP_LOCAL_KEY!, encryptData(newAccessToken.data.data.access_Token))
 
@@ -57,23 +62,20 @@ axiosPrivate.interceptors.response.use(
                 .then((response) => resolve(response))
                 .catch((err) => reject(err));
             });
-
+            IsRefreshing = false
             refreshAndRetryQueue.length = 0;
-
             return axiosPrivate(originalReq)
           }
-          return error
         } catch (err) {
           window.location.href = "/"
           window.localStorage.removeItem(process.env.REACT_APP_LOCAL_KEY!)
           window.localStorage.removeItem("_user")
           throw err
-        } finally {
-          IsRefreshing = false
         }
       }
+
       return new Promise<void>((resolve, reject) => {
-        refreshAndRetryQueue.push({ config: originalReq, resolve, reject });
+        refreshAndRetryQueue.push({ config: originalReq.config, error: originalReq.response, resolve, reject });
       });
     }
     return Promise.reject(error);

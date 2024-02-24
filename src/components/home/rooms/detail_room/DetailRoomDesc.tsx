@@ -1,13 +1,11 @@
 import React from 'react'
-import { IFacility, IRoomInfo } from '../../../../types/schema'
+import { IFacility, IRoom } from '../../../../types/schema'
 
 interface DetailRoomDescProps {
-    info: {
-        facility: IFacility[],
-        desc: IRoomInfo
-    }
+    info: IRoom
 }
-const DetailRoomDesc: React.FC<DetailRoomDescProps> = ({info}) => {
+const DetailRoomDesc: React.FC<DetailRoomDescProps> = ({ info }) => {
+
     return (
         <div className='flex flex-col gap-6'>
             <h3 className='text-xl font-semibold'>Details</h3>
@@ -23,7 +21,11 @@ const DetailRoomDesc: React.FC<DetailRoomDescProps> = ({info}) => {
             </div>
             <div>
                 <h3 className='text-md font-semibold'>Deskripsi</h3>
-                <p className='max-w-md'>{info?.desc?.desc!}</p>
+                <p className='max-w-md'>{info.room_info?.desc}</p>
+            </div>
+            <div>
+                <h3 className='text-md font-semibold'>Tipe Ruang</h3>
+                <p className='max-w-md'>{info.room_info?.type}</p>
             </div>
         </div>
     )

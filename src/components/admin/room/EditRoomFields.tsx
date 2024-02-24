@@ -8,6 +8,7 @@ import { RootState } from "../../../libs/redux/store"
 import { updateRooms } from "../../../libs/redux"
 import { IFacility } from "../../../types/schema"
 import { RoomEditProps, RoomType } from "../../../pages/admin/Rooms"
+import { ROOM_STATUS } from "../../../constants"
 
 type RoomEditFieldProps = {
     drawerHandler: (data?: RoomType) => void,
@@ -40,7 +41,7 @@ const EditRoomField: React.FC<RoomEditFieldProps> = ({ drawerHandler, drawer }) 
             const reqUpload = await axiosPrivate.patch(`/api/rooms/${data?.id}`, reqData)
             if (reqUpload.status === 200) {
                 setLoading("success")
-                dispatch(updateRooms(reqUpload.data.data))
+                dispatch(updateRooms(reqUpload.data.result))
                 message.open({
                     content: "Success",
                     type: "success"
@@ -151,13 +152,10 @@ const EditRoomField: React.FC<RoomEditFieldProps> = ({ drawerHandler, drawer }) 
                             <Select
                                 placeholder={data?.status}
                                 options={[
-                                    {
-                                        label: "Tersedia",
-                                        value: true
-                                    }, {
-                                        label: "Tidak Tersedia",
-                                        value: false
-                                    }
+                                    Object.keys(ROOM_STATUS).map((data) => ({
+                                        label: data,
+                                        value: ROOM_STATUS[data as keyof typeof ROOM_STATUS]
+                                    }))
                                 ]} />
                         </Form.Item>
                         <Form.Item
@@ -171,9 +169,14 @@ const EditRoomField: React.FC<RoomEditFieldProps> = ({ drawerHandler, drawer }) 
                                     {
                                         label: "Pria",
                                         value: "man"
-                                    }, {
+                                    }, 
+                                    {
                                         label: "Wanita",
                                         value: "woman"
+                                    },
+                                    {
+                                        label: "all",
+                                        value: "all"
                                     }
                                 ]} />
                         </Form.Item>

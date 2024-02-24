@@ -16,7 +16,7 @@ const store = configureStore({
 })
 
 store.subscribe(() => {
-    console.log("Redux Store :", store.getState())
+    console.log("Redux Store =>", store.getState())
 })
 
 export type AppDispatch = typeof store.dispatch;

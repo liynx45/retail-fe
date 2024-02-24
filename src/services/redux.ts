@@ -22,7 +22,7 @@ const fetchRoom = createAsyncThunk(
         try {
             const get = await axiosPublic.get("/api/rooms" + query)
             if (get.status === 200) {
-                return get.data.data
+                return get.data.result
             }
         } catch (e: any) {
             return thunkAPI.rejectWithValue(e.response.data.errors);

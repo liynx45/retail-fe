@@ -3,7 +3,7 @@ import { SetStateAction, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import { useLocation, useSearchParams } from "react-router-dom"
 import { RootState } from "../../../libs/redux/store"
-import { ModalSearchRoom } from "./components"
+import { ModalSearchRoom } from "./detail_room"
 import { Button, Checkbox, Form, Input, Select, Slider } from "antd"
 import { ROOM_STATUS } from "../../../constants"
 
@@ -28,6 +28,10 @@ const ListRoom: React.FC<PaginationProps> = ({ children, reload, setParams }) =>
     const take = searchParams.get("take") || 6
     const [toggle, setToggle] = useState(false)
     const { search } = useLocation()
+    const [isSearch, setSearch] = useState<{option: string, search: string}>({
+        option: "name",
+        search: ""
+    })
 
     const handleChange = (name: string, value: string) => {
         searchParams.set(name, value)
@@ -60,9 +64,22 @@ const ListRoom: React.FC<PaginationProps> = ({ children, reload, setParams }) =>
         setToggle(!toggle)
     }
 
-    const handleSearch = (e: any) => {
-        console.log(e);
-        
+    const handleSearch = (key: string, value: string) => {
+        setSearch(prev => ({
+            ...prev,
+            [key]: value
+        }))
+    }
+
+    const handlerSearchSubmit = (e: string) => {
+        if (isSearch.search) {
+            searchParams.set(isSearch.option, isSearch.search)
+        } else {
+            searchParams.delete("no_room")
+            searchParams.delete("name")
+        }
+        setSearchParams(searchParams)
+        setToggle(!toggle)
     }
 
     const SelectSearch = <Select
@@ -72,6 +89,7 @@ const ListRoom: React.FC<PaginationProps> = ({ children, reload, setParams }) =>
             { value: "no_room", label: "No Ruang" },
         ]}
         className="w-26"
+        onChange={(e) => handleSearch("option", e)}
     />
 
     useEffect(() => {
@@ -86,7 +104,7 @@ const ListRoom: React.FC<PaginationProps> = ({ children, reload, setParams }) =>
             <div className="flex justify-between py-4 px-24 items-center shadow-md bg-slate-200 sticky top-0 z-40">
                 <div className="flex justify-between gap-6 items-center">
                     <div>
-                        <Input onChange={(e) => handleSearch(e)} addonBefore={SelectSearch} />
+                        <Input.Search onSearch={handlerSearchSubmit} onChange={(e) => handleSearch("search", e.target.value)} addonBefore={SelectSearch} />
                     </div>
                 </div>
                 <div className="flex justify-between items-center gap-6">
@@ -94,8 +112,11 @@ const ListRoom: React.FC<PaginationProps> = ({ children, reload, setParams }) =>
                         <span>Result</span>
                         <input
                             type="number"
+                            min={1}
+                            max={25}
+                            defaultValue={6}
                             onChange={(e) => handleChange("take", e.target.value.toString())}
-                            className="border rounded-md outline-none w-12 pl-1"
+                            className="border rounded-md outline-none w-8 pl-1"
                         />
                     </div>
                     <div>

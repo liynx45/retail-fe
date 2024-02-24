@@ -12,7 +12,7 @@ const CardRoom: React.FC<CardRoomProps> = ({ data }) => {
     const encrypt = encryptData(data.id).split("/").join("%6")
 
     return (
-        <div className='p-3 relative  overflow-hidden cursor-pointer shadow-sm flex bg-slate-200 rounded-lg flex-col gap-3'>
+        <div className='p-3 relative max-h-[350px]  overflow-hidden cursor-pointer shadow-sm flex bg-slate-200 rounded-lg flex-col gap-3'>
             <Image className='object-cover w-full rounded-lg' height={170} src={data.room_image[0].url} alt="" />
             <div className='py-1 gap-2 flex flex-col justify-between'>
                 <div className='flex justify-between flex-start'>

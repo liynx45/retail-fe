@@ -37,8 +37,8 @@ function NotifProvider({
             if (get.status === 200) {
                 setNotif(get.data.result.notif.reverse())
             }
-        } catch {
-            throw new Error()
+        } catch(err) {
+            throw err
         }
     }, [notif])
 

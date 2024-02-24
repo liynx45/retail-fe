@@ -1,26 +1,30 @@
 import { HomeOutlined, ShareAltOutlined } from '@ant-design/icons'
-import { Breadcrumb, Skeleton } from 'antd'
+import { Breadcrumb, Skeleton, message } from 'antd'
 import React from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { FacebookShareButton } from "react-share"
 import { CommentDetailRoom, DetailRoomDesc, ImageDetailRoom, PaymentCard } from '../../../components/home'
-import { getRoomById } from '../../../services/api'
+import { ResultFetch } from '../../../services/api'
 import { IRoom } from '../../../types/schema'
-import { useFetch } from '../../../hooks'
+import { useFetch, useScrollToTop } from '../../../hooks'
 import SkeletonImage from 'antd/es/skeleton/Image'
 import SkeletonInput from 'antd/es/skeleton/Input'
 import SkeletonAvatar from 'antd/es/skeleton/Avatar'
-import SkeletonButton from 'antd/es/skeleton/Button'
+import { statusRoom } from '../../../utils'
+import RelatedRoom from '../../../components/home/rooms/detail_room/RelatedRoom'
 
 
 const DetailRoom: React.FC = () => {
 
     const { roomId } = useParams()
-    const { pathname } = useLocation()
-    const { status, data } = useFetch<IRoom>({
-        fetch: getRoomById(roomId!)
+    const { status, data } = useFetch<ResultFetch<IRoom>>({
+        type: "public",
+        url: `/api/rooms/${roomId}`,
+        method: "GET"
     })
+    const scrollTop = useScrollToTop()
 
+    const status_room = statusRoom(data?.result?.status!)
 
     return (
         <div>
@@ -37,7 +41,7 @@ const DetailRoom: React.FC = () => {
                             items={[
                                 { title: <HomeOutlined />, href: "/" },
                                 { title: "Ruang", href: "/ruang" },
-                                { title: data?.room_info?.name, href: `/ruang/${roomId}` }
+                                { title: data?.result?.room_info?.name, href: `/ruang/${roomId}` }
                             ]}
                         />
                     )
@@ -49,7 +53,7 @@ const DetailRoom: React.FC = () => {
                         {status === "loading" ? <SkeletonInput active /> : (
                             <>
                                 <div>
-                                    <h3 className='font-semibold text-xl'>{data?.room_info?.name}</h3>
+                                    <h3 className='font-semibold text-xl'>{data?.result?.room_info?.name}</h3>
                                     <p className='text-sm text-slate-400'>Baal Hotel, rang 1 A, Lantai 2</p>
                                 </div>
                                 <div>
@@ -59,22 +63,31 @@ const DetailRoom: React.FC = () => {
                         )}
                     </div>
                     <div>
-                        {status === "loading" ? <SkeletonImage className='my-6' active /> : <ImageDetailRoom img={data?.room_image!} />}
+                        {status === "loading" ? <SkeletonImage className='my-6' active /> : <ImageDetailRoom img={data?.result?.room_image!} />}
                     </div>
                     <div className='flex justify-between flex-start'>
-                        <div className='flex flex-col justify-between w-full'>
-                            {status === "loading" ? <SkeletonInput className='my-2' /> : <DetailRoomDesc info={{ facility: data?.facility!, desc: data?.room_info! }} />}
-
-                        </div>
-                        <div>
-                            {status === "loading" ? <SkeletonButton active /> : <PaymentCard data={data!} />}
-                        </div>
+                        {
+                            status === "loading" ?
+                                <Skeleton className='my-6' /> : (
+                                    <>
+                                        <div className='flex flex-col justify-between w-full'>
+                                            <DetailRoomDesc info={data?.result!} />
+                                        </div>
+                                        <div>
+                                            <span className={`${status_room?.class} mr-8`}>{status_room?.label}</span>
+                                        </div>
+                                        <div>
+                                            <PaymentCard data={data?.result!} />
+                                        </div>
+                                    </>
+                                )
+                        }
                     </div>
                     <div>
                         {status === "loading" ? <Skeleton active /> : <CommentDetailRoom />}
                     </div>
                     <div className='py-6'>
-                        <h4>Related Room</h4>
+                        {status === "loading" ? <Skeleton active /> : <RelatedRoom type={data?.result?.room_info?.type!} />}
                     </div>
                 </div>
             </div>

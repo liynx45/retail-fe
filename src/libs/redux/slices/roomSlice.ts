@@ -51,8 +51,8 @@ const roomSlice = createSlice({
             state.status = "loading"
         }),
             builder.addCase(fetchRoom.fulfilled, (state, action) => {
-                state.status = "success"                
-                state.data = action.payload?.result
+                state.status = "success"           
+                state.data = action.payload.result
                 state.pagging = action.payload?.pagging
             }),
             builder.addCase(fetchRoom.rejected, (state, action) => {

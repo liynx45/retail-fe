@@ -1,12 +1,13 @@
-import { DatePicker, DatePickerProps, Form, Input, InputNumber, Typography } from 'antd'
+import { Breadcrumb, DatePickerProps } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RangePickerProps } from 'antd/es/date-picker'
-import { IRoom } from '../../../types/schema'
 import { axiosPrivate } from '../../../libs/axios'
 import { decryptData } from '../../../libs/crypto'
-import { useFetch } from '../../../hooks'
-import { getRoomById } from '../../../services/api'
+import { useFetch, useScrollToTop } from '../../../hooks'
+import { InfoMember, PaymentMethod, RoomInfoOrder } from '../../../components/home/rooms'
+import { HomeOutlined } from '@ant-design/icons'
+import { useSession } from '../../../context/AuthProvider'
 
 
 interface DetailPayProps {
@@ -19,14 +20,18 @@ function Order() {
 
     const { orderId } = useParams()
     const navigate = useNavigate()
+    const session = useSession()
     const [detailPay, setDetailPay] = useState<DetailPayProps>({
         roomId: "",
     })
     const [total, setTotal] = useState<number>(0)
     const [expires, setExpires] = useState<Date>()
-    const { status, data } = useFetch<IRoom>({
-        fetch: getRoomById(detailPay.roomId)
+    const { status, data } = useFetch<any>({
+        type: "public",
+        url: "",
+        method: "GET"
     })
+    const scrollTo = useScrollToTop()
 
 
     useEffect(() => {
@@ -35,6 +40,8 @@ function Order() {
         const decrypt = decryptData(orderId.split("%6").join("/"))
         if (decrypt) {
             setDetailPay(JSON.parse(decrypt))
+        } else {
+            navigate("/ruang")
         }
     }, [])
 
@@ -67,31 +74,31 @@ function Order() {
     }
 
     return (
-        <div className='flex justify-center items-center min-h-screen w-full'>
-            <div className='border bg-slate-300 p-6'>
-                <Typography.Title>
-                    Order Ruang
-                </Typography.Title>
-
+        <div className='w-full'>
+            <div className='flex w-full justify-between px-12 bg-slate-200 py-4'>
                 <div>
-                    <span>{data?.room_info?.name}</span>
-                    <span>Total: {total}</span>
-                    <Form
-                        layout='vertical'
-                    >
-                        <Form.Item
-                            label="Vocer"
-                        >
-                            <Input />
-                        </Form.Item>
-                        <Form.Item
-                            label="Waktu pesan"
-                        >
-                            <DatePicker.RangePicker onChange={onChange} />
-                        </Form.Item>
-                        <button onClick={handlerBooking}>Booking</button>
-                    </Form>
+                    <Breadcrumb
+                        separator=">"
+                        items={[
+                            { title: <HomeOutlined />, href: "/" },
+                            { title: "Ruang", href: "/ruang" },
+                            { title: "Ruang 3", },
+                            { title: "Order", }
+                        ]}
+                    />
                 </div>
+                <div>
+
+                </div>
+            </div>
+            <div className='px-32'>
+                <InfoMember />
+            </div>
+            <div className='px-32'>
+                <RoomInfoOrder data={""} />
+            </div>
+            <div className='px-32'>
+                <PaymentMethod />
             </div>
         </div>
     )

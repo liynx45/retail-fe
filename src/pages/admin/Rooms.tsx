@@ -196,7 +196,7 @@ const Rooms = () => {
                         <Table
                             className='w-[75%]'
                             columns={columns}
-                            dataSource={rooms.data.map((room: IRoom) => columnRooms(room))}
+                            dataSource={rooms.data && rooms.data.map((room: IRoom) => columnRooms(room))}
                             pagination={false}
                             loading={rooms.status === 'loading'}
                             key={new Date().getTime()}

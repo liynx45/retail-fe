@@ -60,12 +60,15 @@ const AuthProvider = ({
     const navigate = useNavigate()
 
     const isRefresh = useCallback(async () => {
-        setStatus("loading")
         try {
+            setStatus("loading")
             const get = await axiosPrivate.get("/auth/me")
+            console.log("get =>",get);            
             if (get.status === 200) {
                 setStatus("authorized")
             }
+            console.log("await loading");
+            
         } catch {
             setStatus("unauthorized")
         }
@@ -137,6 +140,7 @@ const AuthProvider = ({
             }
         }
 
+        
         console.log("Session :", status)
 
     }, [status])
@@ -145,6 +149,14 @@ const AuthProvider = ({
         if (pathname.startsWith("/dashboard")) {
             isRefresh()
         }
+
+        if (pathname.startsWith("/ruang")){
+            const path = pathname.split("/")
+            if (path.length === 4 && status === "unauthorized"){
+                navigate(-1)
+            }  
+        }
+
     }, [pathname])
 
     useEffect(() => {
@@ -161,6 +173,9 @@ const AuthProvider = ({
         }
         isRefresh()
     }, [])
+
+    console.log(status);
+    
 
     return (
         <div>
