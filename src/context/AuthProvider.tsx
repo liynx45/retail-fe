@@ -6,6 +6,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 interface User {
     username: string;
     role: number;
+    gender: "man" | "woman" | "";
+    phone: number;
+    address: string;
+    birth: string;
     first_name: string;
     last_name: string;
     profile: string;
@@ -28,6 +32,10 @@ const AuthContext = React.createContext<StatusProps>({
         last_name: "",
         profile: "",
         email: "",
+        address: "",
+        birth: "",
+        gender: "",
+        phone: 0,
         verify: false
     },
     status: "unauthorized",
@@ -53,6 +61,10 @@ const AuthProvider = ({
         last_name: "",
         profile: "",
         email: "",
+        address: "",
+        birth: "",
+        gender: "",
+        phone: 0,
         verify: false
     })
     const [status, setStatus] = useState<"authorized" | "unauthorized" | "loading">("unauthorized")
@@ -63,11 +75,9 @@ const AuthProvider = ({
         try {
             setStatus("loading")
             const get = await axiosPrivate.get("/auth/me")
-            console.log("get =>",get);            
             if (get.status === 200) {
                 setStatus("authorized")
             }
-            console.log("await loading");
             
         } catch {
             setStatus("unauthorized")
@@ -173,10 +183,7 @@ const AuthProvider = ({
         }
         isRefresh()
     }, [])
-
-    console.log(status);
     
-
     return (
         <div>
             <AuthContext.Provider value={{ status, setStatus, user, setUser }}>

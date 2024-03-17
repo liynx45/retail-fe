@@ -4,6 +4,7 @@ import facilitySlice from "./slices/facilitySlice";
 import categorySlice from "./slices/categorySlice";
 import usersSlice from "./slices/usersSlice";
 import companySlice from "./slices/companySlice";
+import orderSlice from "./slices/orderSlice";
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         facility: facilitySlice,
         category: categorySlice,
         users: usersSlice,
-        company: companySlice
+        company: companySlice,
+        order: orderSlice
     }
 })
 

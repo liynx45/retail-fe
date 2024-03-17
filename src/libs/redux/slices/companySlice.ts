@@ -11,6 +11,7 @@ interface companyRedux {
 const initialState: companyRedux = {
     status: "idle",
     data: {
+        logo: "",
         address: "",
         banner: [],
         id: "",

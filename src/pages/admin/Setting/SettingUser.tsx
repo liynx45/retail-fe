@@ -1,7 +1,7 @@
 import { UploadOutlined } from '@ant-design/icons'
 import { useLoading } from '../../../hooks'
 import { axiosPrivate } from '../../../libs/axios'
-import { Form, Input, Typography, message } from 'antd'
+import { DatePicker, Form, Input, InputNumber, Select, Typography, message } from 'antd'
 import React, { useRef, useState } from 'react'
 import { useSession } from '../../../context/AuthProvider'
 
@@ -20,7 +20,11 @@ function SettingUser() {
                 first_name: form.getFieldValue("first_name") || user?.first_name,
                 last_name: form.getFieldValue("last_name"),
                 role: form.getFieldValue("role"),
-                email: form.getFieldValue("email")
+                email: form.getFieldValue("email"),
+                address: form.getFieldValue("address"),
+                gender: form.getFieldValue("gender"),
+                phone :form.getFieldValue("phone"),
+                birth: form.getFieldValue("birth")
             }
             const update = await axiosPrivate.patch(`/api/users/${user?.username}`, reqData)
             if (update.status === 200) {
@@ -67,7 +71,7 @@ function SettingUser() {
                     setUser(prev => ({
                         ...prev,
                         profile: update.data.result.profile
-                    })) 
+                    }))
                 }
             } else {
                 message.warning("Masukan foto")
@@ -127,6 +131,27 @@ function SettingUser() {
                                 <Input placeholder={user.last_name} />
                             </Form.Item>
                         </div>
+                        <div className='flex justify-center gap-3 mt-6'>
+                            <Form.Item
+                                label="No telepon"
+                                name="phone"
+                            >
+                                <InputNumber className='w-full' />
+                            </Form.Item>
+                            <Form.Item
+                                name="gender"
+                                label="Jenis Kelamin"
+                            >
+                                <Select
+                                    className='w-full'
+                                    placeholder="pilih jenis kelamin anda"
+                                    options={[
+                                        { value: "man", name: "Laki-Laki" },
+                                        { value: "woman", name: "Perempuan" }
+                                    ]}
+                                />
+                            </Form.Item>
+                        </div>
                         <Form.Item
                             name="email"
                             label="email"
@@ -134,12 +159,19 @@ function SettingUser() {
                             <Input placeholder={user.email} />
                         </Form.Item>
                         <Form.Item
+                            name="address"
                             label="Alamat"
                         >
                             <Input />
                         </Form.Item>
+                        <Form.Item
+                            name="birth"
+                            label="Tanggal lahir"
+                        >
+                            <DatePicker className='w-full' />
+                        </Form.Item>
                     </div>
-                    <button disabled={isLoading === "loading"} type='submit' className='w-full bg-sky-400 rounded-md py-1 '>Ubah</button>
+                    <button disabled={isLoading === "loading"} type='submit' className='w-full bg-primary rounded-md py-1 '>Ubah</button>
                 </Form>
             </div>
 

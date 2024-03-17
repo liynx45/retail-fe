@@ -89,11 +89,26 @@ const fetchCompany = createAsyncThunk(
     }
 )
 
+const fetchOrder = createAsyncThunk(
+    "order",
+    async (query: string, thunkAPI) => {
+        try {
+            const get = await axiosPrivate.get(`/api/orders/${query}`)
+            if (get.status === 200) {
+                return get.data.result
+            }
+        }catch(e: any){
+            return thunkAPI.rejectWithValue(e.response.data.errors)
+        }
+    }
+)
+
 export {
     fetchRoom,
     fetchfacility,
     fetchCategory,
     fetchUsers,
     fetchLogin,
-    fetchCompany
+    fetchCompany,
+    fetchOrder
 }

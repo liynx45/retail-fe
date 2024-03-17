@@ -1,5 +1,5 @@
 import React from "react"
-import { ROOM_STATUS, USER_ROLE } from "../constants/status_code"
+import { PAYMENT_STATUS, ROOM_STATUS, USER_ROLE } from "../constants/status_code"
 import { IFacility, IRoom } from "../types/schema"
 
 const columnRooms = (req: IRoom) => {
@@ -66,8 +66,29 @@ const statusRoom = (code: number) => {
     }
 }
 
+const statusPayment = (code: number) => {
+    switch (code) {
+        case PAYMENT_STATUS.PROCESS:
+            return {
+                class: "",
+                label: "Prosses"
+            }
+        case PAYMENT_STATUS.FAIL:
+            return {
+                class: "",
+                label: "Gagal"
+            }
+        case PAYMENT_STATUS.SUCCESS:
+            return {
+                class: "",
+                label: "Berhasil"
+            }
+    }
+}
+
 export {
     columnRooms,
     statusRoom,
-    userRole
+    userRole,
+    statusPayment
 }

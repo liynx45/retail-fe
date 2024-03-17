@@ -1,17 +1,17 @@
-import { HomeOutlined } from '@ant-design/icons'
-import { Breadcrumb, Button, Form, Input } from 'antd'
 import React from 'react'
 import { useSession } from '../../../../context/AuthProvider'
+import { Link } from 'react-router-dom'
 
-const InfoMember = () => {
+
+const InfoMember: React.FC = () => {
 
     const { user } = useSession()
-    const _input_class = 'flex gap-2 items-center'
+    const _input_class = 'flex gap-2 items-center';
 
     return (
-        <div className='my-5'>
+        <div>
             <h4 className='text-xl font-semibold my-2'>Informasi pembeli</h4>
-            <div className='my-4 p-6 rounded-lg border'>
+            <div className='my-4 p-6 shadow'>
                 <div className='flex justify-between items-center'>
                     <div className='flex flex-col'>
                         <div className={_input_class}>
@@ -20,17 +20,21 @@ const InfoMember = () => {
                         </div>
                         <div className={_input_class}>
                             <span>Alamat :</span>
-                            <span>Jepara, Jawa tengah Keliapucang wetan</span>
+                            <span>{user.address}</span>
                         </div>
                         <div className={_input_class}>
                             <span>No :</span>
-                            <span>081226948547</span>
+                            <span>{user.phone}</span>
                         </div>
                     </div>
                     <div className='flex gap-2 items-center'>
-                        <button>Ubah</button>
-                        <span>|</span>
-                        <button>Tambah</button>
+
+                        <Link
+                            to={"/dashboard/setelan/user"}
+                            className='py-1 px-4 bg-primary rounded-md text-white'
+                        >
+                            Ubah
+                        </Link>
                     </div>
                 </div>
             </div>

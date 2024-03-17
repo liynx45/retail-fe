@@ -46,7 +46,7 @@ const SettingLayout: React.FC = () => {
             <div
                 className='flex gap-4'
             >
-                <div className='flex flex-col gap-2 min-h-[55vh] p-4 w-[170px]'>
+                <div className='flex fixed flex-col gap-2 min-h-[55vh] p-4 w-[170px]'>
                     {
                         menu.map((path: { label: string, key: string }, i: number) => {
                             if (user?.role !== USER_ROLE.ADMIN && path.key === "company") {
@@ -73,7 +73,7 @@ const SettingLayout: React.FC = () => {
                         })
                     }
                 </div>
-                <div className='w-full bg-slate-100 min-h-[58vh] rounded-md'>
+                <div className='w-full ml-36 bg-slate-100 min-h-[58vh] rounded-md'>
                     <Outlet />
                 </div>
             </div>

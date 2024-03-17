@@ -46,7 +46,7 @@ axiosPrivate.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       if (error.response.status === 401 && error.config.url === "/auth/refresh") {
         return new Promise<void>((resolve, reject) => {
-          reject(error)
+          reject(error);
         })
       }
       if (!IsRefreshing) {
@@ -67,10 +67,9 @@ axiosPrivate.interceptors.response.use(
             return axiosPrivate(originalReq)
           }
         } catch (err) {
-          window.location.href = "/"
+          // window.location.href = "/"
           window.localStorage.removeItem(process.env.REACT_APP_LOCAL_KEY!)
           window.localStorage.removeItem("_user")
-          throw err
         }
       }
 

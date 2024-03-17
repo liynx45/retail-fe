@@ -1,80 +1,81 @@
-import { Breadcrumb, DatePickerProps } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { Breadcrumb, Skeleton, QRCode } from 'antd'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { RangePickerProps } from 'antd/es/date-picker'
-import { axiosPrivate } from '../../../libs/axios'
 import { decryptData } from '../../../libs/crypto'
-import { useFetch, useScrollToTop } from '../../../hooks'
 import { InfoMember, PaymentMethod, RoomInfoOrder } from '../../../components/home/rooms'
 import { HomeOutlined } from '@ant-design/icons'
 import { useSession } from '../../../context/AuthProvider'
+import { useFetch, useLoading } from '../../../hooks'
+import { ResultFetch } from '../../../types/FetchResult'
+import { IFacility, IRoom } from '../../../types/schema'
 
-
-interface DetailPayProps {
+export interface DetailPayProps {
     roomId: string;
     total?: number;
-    start_date?: string;
-    end_date?: string;
+    start_date: string;
+    end_date: string;
+    total_day: number;
+    total_price: number;
+    total_add: number;
+    total_facility: number;
 }
+export interface InfoCustomer {
+    first_name: string;
+    last_name: string;
+    phone: number;
+    gender: "man" | "woman";
+    address: string;
+    birth: Date;
+    verify: boolean;
+}
+export interface DetailRoom {
+    message: string;
+    voucher: string;
+}
+
 function Order() {
 
-    const { orderId } = useParams()
-    const navigate = useNavigate()
-    const session = useSession()
+    const { orderId } = useParams();
+    const navigate = useNavigate();
+    const { isLoading, setLoading } = useLoading()
     const [detailPay, setDetailPay] = useState<DetailPayProps>({
         roomId: "",
-    })
-    const [total, setTotal] = useState<number>(0)
-    const [expires, setExpires] = useState<Date>()
-    const { status, data } = useFetch<any>({
+        start_date: "",
+        end_date: "",
+        total_day: 0,
+        total_price: 0,
+        total_add: 0,
+        total_facility: 0
+    });
+    const [detailRoom, setDetailRoom] = useState<DetailRoom>({
+        message: "",
+        voucher: "",
+    });
+    const { data, status } = useFetch<ResultFetch<IRoom>>({
         type: "public",
-        url: "",
+        url: detailPay.roomId && `/api/rooms/${detailPay.roomId}`,
         method: "GET"
     })
-    const scrollTo = useScrollToTop()
-
 
     useEffect(() => {
+
         if (!orderId)
             return navigate("/")
-        const decrypt = decryptData(orderId.split("%6").join("/"))
+
+        const decrypt = window.atob(orderId)
         if (decrypt) {
-            setDetailPay(JSON.parse(decrypt))
+            setDetailPay({
+                ...JSON.parse(decrypt)
+            })
         } else {
             navigate("/ruang")
         }
+
     }, [])
 
-    const onChange = (
-        value: DatePickerProps['value'] | RangePickerProps['value'],
-        dateString: [string, string] | string,
-    ) => {
-        if (!value)
-            return
-        const getDay = Object.values(value)[1].$d - Object.values(value)[0].$d
-        setTotal((getDay / (1000 * 60 * 60 * 24) + 1) * data?.price!)
-        setExpires(Object.values(value)[1].$d)
-    };
-
-
-    const handlerBooking = async () => {
-        try {
-            const reqData = {
-                expires: expires,
-                roomId: data?.id,
-                total: total
-            }
-            const post = await axiosPrivate.post("/api/order", reqData)
-            if (post.status === 200) {
-                console.log(post.data);
-            }
-        } catch {
-
-        }
-    }
 
     return (
-        <div className='w-full'>
+        <div className='w-full bg-primary-white'>
             <div className='flex w-full justify-between px-12 bg-slate-200 py-4'>
                 <div>
                     <Breadcrumb
@@ -82,7 +83,7 @@ function Order() {
                         items={[
                             { title: <HomeOutlined />, href: "/" },
                             { title: "Ruang", href: "/ruang" },
-                            { title: "Ruang 3", },
+                            { title: data?.result?.room_info?.name, href: `/ruang/${data?.result?.id}` },
                             { title: "Order", }
                         ]}
                     />
@@ -91,15 +92,47 @@ function Order() {
 
                 </div>
             </div>
-            <div className='px-32'>
-                <InfoMember />
-            </div>
-            <div className='px-32'>
-                <RoomInfoOrder data={""} />
-            </div>
-            <div className='px-32'>
-                <PaymentMethod />
-            </div>
+            {
+                <div className='flex flex-col gap-12'>
+                    {
+                        isLoading !== "success" && (
+                            <>
+                                <div className='px-32'>
+                                    {
+                                        isLoading === "loading" || status === "loading" ?
+                                            <Skeleton active />
+                                            :
+                                            <InfoMember />
+                                    }
+                                </div>
+                                <div className='px-32'>
+                                    {
+                                        isLoading === "loading" || status === "loading" ?
+                                            <Skeleton active /> :
+                                            <RoomInfoOrder
+                                                set={setDetailRoom}
+                                                infoRoom={data?.result}
+                                                detailRoom={detailRoom}
+                                            />
+                                    }
+                                </div>
+                            </>
+                        )
+                    }
+                    <div className='px-32'>
+                        {
+                            isLoading === "loading" || status === "loading" ?
+                                <Skeleton active /> :
+                                <PaymentMethod
+                                    isLoading={isLoading}
+                                    detailRoom={detailRoom}
+                                    detailOrder={detailPay}
+                                    setLoading={setLoading}
+                                />}
+
+                    </div>
+                </div>
+            }
         </div>
     )
 }

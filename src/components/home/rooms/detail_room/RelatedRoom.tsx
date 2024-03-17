@@ -3,7 +3,7 @@ import { useFetch } from '../../../../hooks'
 import { SearchResult } from '../../../../types/FetchResult'
 import { IRoom } from '../../../../types/schema'
 import CardRoom from '../../../cards/CardRoom'
-import SkeletonRoom from '../../../../pages/home/sekeleton/SkeletonRoom'
+import { Skeleton } from 'antd'
 
 interface RelatedRoomProps {
     type: string;
@@ -26,7 +26,7 @@ const RelatedRoom: React.FC<RelatedRoomProps> = ({ type }) => {
             <div className='grid grid-cols-3 gap-12'>
                 {
                     status === "loading" ?
-                        <SkeletonRoom /> :
+                        <Skeleton/> :
                         data?.result.result.map(data => (
                             <CardRoom key={data.id} data={data} />
                         ))

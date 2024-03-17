@@ -1,207 +1,81 @@
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import React from 'react';
-import {
-  Button,
-  Checkbox,
-  Col,
-  ColorPicker,
-  Form,
-  InputNumber,
-  Radio,
-  Rate,
-  Row,
-  Select,
-  Slider,
-  Space,
-  Switch,
-  Upload,
-} from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { Input, InputNumber, Skeleton, Typography, message } from 'antd';
+import React, { useState } from 'react';
+import { axiosPrivate } from '../../libs/axios';
+import { ITransaction } from '../../types/schema';
+import { CaserInfo, CustomerInfo, RoomInfo } from '../../components/admin/payment';
+import OrderSearch from '../../components/admin/payment/OrderSeacrh';
+import { LoadingProps } from '../../hooks/useLoading';
+import { PAYMENT_STATUS } from '../../constants';
+import OrderInfo from '../../components/admin/payment/OrderInfo';
 
-const { Option } = Select;
+export interface TransactionData {
+  data: ITransaction | undefined;
+  status: LoadingProps;
+}
 
-const formItemLayout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 14 },
-};
+const Payment: React.FC = () => {
 
-const normFile = (e: any) => {
-  console.log('Upload event:', e);
-  if (Array.isArray(e)) {
-    return e;
+  const [trans, setTrans] = useState<TransactionData>({
+    data: undefined,
+    status: "idle"
+  })
+  const [bill, setBill] = useState(0)
+
+  const handlePayment = async () => {
+    if (!trans.data || bill === 0) return message.warning("Error")
+    const payload = {
+      status: PAYMENT_STATUS.SUCCESS,
+      code: trans.data.code,
+      cash: bill
+    }
+    try {
+      const post = await axiosPrivate.patch(`/api/orders/${trans.data.id}`, payload)
+      if (post.status === 200) {
+        message.success("Pembayaran berhasil")
+      }
+    } catch(e: any) {
+      message.warning(e.response.data.errors)
+    }
   }
-  return e?.fileList;
+
+  return (
+    <div className='p-2 w-full'>
+      <div className='flex justify-between mb-2'>
+        <Typography.Title level={2}>
+          Kasir
+        </Typography.Title>
+        <button className='text-xl'>Tambah Saldo <PlusCircleOutlined /></button>
+      </div>
+      <div className='flex gap-2 w-full'>
+        <div className='flex flex-col w-[30%] gap-2'>
+        <OrderSearch setOrder={setTrans} />
+          {trans.status === "loading" ? <Skeleton active /> : <CustomerInfo data={trans.data?.users} />}
+          {trans.status === "loading" ? <Skeleton active /> : <OrderInfo data={trans.data!} />}
+        </div>
+        <div className='w-[70%]'>
+          <div className='w-full gap-3 p-4 flex justify-between bg-primary-bg'>
+            <span className='text-xl'>Saldo</span>
+            <span className='text-2xl'>Rp. 300.000</span>
+          </div>
+          <div className='w-full my-2'>
+            <CaserInfo />
+            {trans.status === "loading" ? <Skeleton active /> : <RoomInfo data={trans.data?.rooms} />}
+            <div className='w-full flex  gap-3 flex-col p-4 bg-primary-bg mt-2'>
+              <div className='text-xl flex gap-6 items-center'>
+                <span>Bill</span>
+                <InputNumber className='text-xl w-full' value={bill} onChange={(e) => setBill(e!)} />
+              </div>
+              <button
+                onClick={handlePayment}
+                className='bg-primary py-2 rounded-md'
+              >Bayar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 };
-
-const onFinish = (values: any) => {
-  console.log('Received values of form: ', values);
-};
-
-const Payment: React.FC = () => (
-  <Form
-    name="validate_other"
-    {...formItemLayout}
-    onFinish={onFinish}
-    initialValues={{
-      'input-number': 3,
-      'checkbox-group': ['A', 'B'],
-      rate: 3.5,
-      'color-picker': null,
-    }}
-    style={{ maxWidth: 600 }}
-  >
-    <Form.Item label="Plain Text">
-      <span className="ant-form-text">China</span>
-    </Form.Item>
-    <Form.Item
-      name="select"
-      label="Select"
-      hasFeedback
-      rules={[{ required: true, message: 'Please select your country!' }]}
-    >
-      <Select placeholder="Please select a country">
-        <Option value="china">China</Option>
-        <Option value="usa">U.S.A</Option>
-      </Select>
-    </Form.Item>
-
-    <Form.Item
-      name="select-multiple"
-      label="Select[multiple]"
-      rules={[{ required: true, message: 'Please select your favourite colors!', type: 'array' }]}
-    >
-      <Select mode="multiple" placeholder="Please select favourite colors">
-        <Option value="red">Red</Option>
-        <Option value="green">Green</Option>
-        <Option value="blue">Blue</Option>
-      </Select>
-    </Form.Item>
-
-    <Form.Item label="InputNumber">
-      <Form.Item name="input-number" noStyle>
-        <InputNumber min={1} max={10} />
-      </Form.Item>
-      <span className="ant-form-text" style={{ marginLeft: 8 }}>
-        machines
-      </span>
-    </Form.Item>
-
-    <Form.Item name="switch" label="Switch" valuePropName="checked">
-      <Switch />
-    </Form.Item>
-
-    <Form.Item name="slider" label="Slider">
-      <Slider
-        marks={{
-          0: 'A',
-          20: 'B',
-          40: 'C',
-          60: 'D',
-          80: 'E',
-          100: 'F',
-        }}
-      />
-    </Form.Item>
-
-    <Form.Item name="radio-group" label="Radio.Group">
-      <Radio.Group>
-        <Radio value="a">item 1</Radio>
-        <Radio value="b">item 2</Radio>
-        <Radio value="c">item 3</Radio>
-      </Radio.Group>
-    </Form.Item>
-
-    <Form.Item
-      name="radio-button"
-      label="Radio.Button"
-      rules={[{ required: true, message: 'Please pick an item!' }]}
-    >
-      <Radio.Group>
-        <Radio.Button value="a">item 1</Radio.Button>
-        <Radio.Button value="b">item 2</Radio.Button>
-        <Radio.Button value="c">item 3</Radio.Button>
-      </Radio.Group>
-    </Form.Item>
-
-    <Form.Item name="checkbox-group" label="Checkbox.Group">
-      <Checkbox.Group>
-        <Row>
-          <Col span={8}>
-            <Checkbox value="A" style={{ lineHeight: '32px' }}>
-              A
-            </Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="A" style={{ lineHeight: '32px' }} disabled>
-              B
-            </Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="C" style={{ lineHeight: '32px' }}>
-              C
-            </Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="D" style={{ lineHeight: '32px' }}>
-              D
-            </Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="E" style={{ lineHeight: '32px' }}>
-              E
-            </Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="F" style={{ lineHeight: '32px' }}>
-              F
-            </Checkbox>
-          </Col>
-        </Row>
-      </Checkbox.Group>
-    </Form.Item>
-
-    <Form.Item name="rate" label="Rate">
-      <Rate />
-    </Form.Item>
-
-    <Form.Item
-      name="upload"
-      label="Upload"
-      valuePropName="fileList"
-      getValueFromEvent={normFile}
-      extra="longgggggggggggggggggggggggggggggggggg"
-    >
-      <Upload name="logo" action="/upload.do" listType="picture">
-        <Button icon={<UploadOutlined />}>Click to upload</Button>
-      </Upload>
-    </Form.Item>
-    <Form.Item label="Dragger">
-      <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-        <Upload.Dragger name="files" action="/upload.do">
-          <p className="ant-upload-drag-icon">
-            <InboxOutlined />
-          </p>
-          <p className="ant-upload-text">Click or drag file to this area to upload</p>
-          <p className="ant-upload-hint">Support for a single or bulk upload.</p>
-        </Upload.Dragger>
-      </Form.Item>
-    </Form.Item>
-    <Form.Item
-      name="color-picker"
-      label="ColorPicker"
-      rules={[{ required: true, message: 'color is required!' }]}
-    >
-      <ColorPicker />
-    </Form.Item>
-
-    <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-      <Space>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-        <Button htmlType="reset">reset</Button>
-      </Space>
-    </Form.Item>
-  </Form>
-);
 
 export default Payment;

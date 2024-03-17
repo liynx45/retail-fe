@@ -10,10 +10,10 @@ interface useFetchProps<T> {
     type: "private" | "public";
     url: string;
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-    params?: object | string
-
+    params?: object | string;
+    body?: object;
 }
-function useFetch<T>({ type, url, method, params }: useFetchProps<T>) {
+function useFetch<T>({ type, url, method, params, body }: useFetchProps<T>) {
 
     const [fetching, setFething] = useState<boolean>(false)
     const [error, setError] = useState<unknown>("")
@@ -29,15 +29,17 @@ function useFetch<T>({ type, url, method, params }: useFetchProps<T>) {
                 await axiosPublic({
                     url: (url + (typeof params === "string" ? params : "")),
                     method: method,
-                    params: typeof params === "object" ? params : {}
+                    params: typeof params === "object" ? params : {},
+                    data: body
                 }) : await axiosPrivate({
                     url: (url + (typeof params === "string" ? params : "")),
                     method: method,
-                    params: typeof params === "object" ? params : {}
+                    params: typeof params === "object" ? params : {},
+                    data: body
                 })
             if (res.status === 200) {
                 setData(res.data),
-                    setLoading("success")
+                setLoading("success")
             }
         } catch (err: any) {
             setLoading('error');

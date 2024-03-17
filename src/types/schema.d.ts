@@ -84,14 +84,16 @@ interface IUser {
   interface ITransaction {
     id: string;
     code: string;
-    total_amount: number;
     date: Date;
+    cash: number;
+    return: number;
+    total_amount: number;
+    message: string | null;
+    start_date: Date;
     expire: Date;
     status: number;
     payment: string;
-    userId: string;
     users: IUser;
-    roomId: string[];
     rooms: IRoom[];
   }
   
@@ -109,6 +111,7 @@ interface IUser {
   
   interface ICompanyInfo {
     id: string;
+    logo: string;
     name: string;
     address: string;
     phone: number;

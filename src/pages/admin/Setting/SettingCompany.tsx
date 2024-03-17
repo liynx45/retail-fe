@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Cascader, Form, Input, InputNumber, Modal, message } from 'antd'
+import { Cascader, Form, Input, InputNumber, Modal, Typography, message } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import useLoading from '../../../hooks/useLoading';
-import { axiosPrivate } from '../../../libs/axios';
+import { axiosPrivate, axiosPublic } from '../../../libs/axios';
 import axios from 'axios';
 import TextArea from 'antd/es/input/TextArea';
 import { RootState } from '../../../libs/redux/store';
 import { updateCompany } from '../../../libs/redux';
 import { ModalUploadBanners } from '../../../components/admin';
+import { EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 interface Option {
     value: string;
@@ -20,8 +21,8 @@ const SettingCompany = () => {
     const [address, setAddress] = useState("")
     const [banner, setBanner] = useState(false)
     const [form] = Form.useForm()
-    const {company} = useSelector((state: RootState) => state)
-    const {isLoading, setLoading} = useLoading()
+    const { company } = useSelector((state: RootState) => state)
+    const { isLoading, setLoading } = useLoading()
     const dispatch = useDispatch()
 
     const handleUpdate = async () => {
@@ -42,7 +43,7 @@ const SettingCompany = () => {
                 setLoading("success")
                 form.resetFields()
             }
-        } catch(e: any) {
+        } catch (e: any) {
             setLoading("error")
             message.error(e.response.data.errors)
         }
@@ -143,6 +144,25 @@ const SettingCompany = () => {
 
     }
 
+    const handleProfile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const target = e.target.files && e.target.files[0]
+        const formData = new FormData()
+        if (target) {
+            formData.append("profile", target)
+        } else {
+            return message.warning("masukan gambar")
+        }
+        try {
+            const post = await axiosPrivate.post("/api/company/profile", formData)
+            if (post.status === 200) {
+                dispatch(updateCompany(post.data.result))
+                message.success("Behasil mengganti")
+            }
+        } catch {
+
+        }
+    }
+
     useEffect(() => {
         const push = async () => {
             const get = await getAddress("provinsi.json", "");
@@ -153,6 +173,23 @@ const SettingCompany = () => {
 
     return (
         <div className='p-6 rounded-md mr-6 max-h-[55vh] overflow-y-scroll'>
+            <div className='w-full flex flex-col items-center justify-center'>
+                <Typography.Title level={5}>
+                    Ubah Logo
+                </Typography.Title>
+                <div className='size-24 relative group'>
+                    <input
+                        type='file'
+                        accept='.jpg, .png, .jpeg'
+                        onChange={(e) => handleProfile(e)}
+                        className='opacity-0 absolute size-24  cursor-pointer'
+                    />
+                    <div className='size-24 rounded-[999px] flex justify-center items-center text-5xl'>
+                        <EditOutlined className='z-20 opacity-50 text-slate-400 group-hover:text-black  pointer-events-none' />
+                        <img src={company.data.logo} className='size-24 absolute pointer-events-none rounded-full object-cover' />
+                    </div>
+                </div>
+            </div>
             <Form
                 onFinish={handleUpdate}
                 layout='vertical'
@@ -170,7 +207,7 @@ const SettingCompany = () => {
                 >
                     <TextArea defaultValue={company.data.about} />
                 </Form.Item>
-                <div  className='w-full grid items-center gap-4 grid-cols-2'>
+                <div className='w-full grid items-center gap-4 grid-cols-2'>
                     <Form.Item
                         label="Email"
                         name="email"
@@ -198,7 +235,7 @@ const SettingCompany = () => {
                     </Form.Item>
                     <div>
                         <Form.Item
-                        label="Banner">
+                            label="Banner">
                             <button onClick={() => setBanner(true)} type='button' className='px-4 py-1 w-full bg-sky-400 rounded-md'>Edit banner</button>
                         </Form.Item>
                         <ModalUploadBanners open={banner} onClose={setBanner} />

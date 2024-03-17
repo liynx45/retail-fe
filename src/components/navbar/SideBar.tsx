@@ -43,7 +43,7 @@ const typeBar = (role?: number) => {
             menuItem(<Link to={"/dashboard/ruang/tambah"}>Tambah Ruang</Link>, '4')
         ]),
         menuItem(<span >Pembayaran</span>, '5', <WalletOutlined />, [
-            menuItem(<Link to={"/dashboard/pembayaran"}>Tagihan</Link>, '7'),
+            menuItem(<Link to={"/dashboard/pembayaran"}>Kasir</Link>, '7'),
             menuItem(<Link to={"/dashboard/pembayaran/riwayat"}>Riwayat</Link>, '8')
         ]),
         menuItem(<span>Laporan</span>, '9', <FileSearchOutlined />, [
